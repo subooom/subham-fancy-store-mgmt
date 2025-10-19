@@ -15,23 +15,36 @@
     .nav-tab.active {
       background-color: #dc2626; /* red-600 */
     }
+    .sales-tab.active {
+      background-color: #4f46e5; /* indigo-600 */
+    }
     .message.success {
       color: #059669; /* green-600 */
     }
     .message.error {
       color: #dc2626; /* red-600 */
     }
+    .date-nav-btn {
+      background-color: #e5e7eb; /* gray-200 */
+      border-radius: 0.375rem;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .date-nav-btn:hover {
+      background-color: #d1d5db; /* gray-300 */
+    }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 p-5 font-sans">
-  <div class="max-w-md mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+  <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
     <div class="bg-gray-800 text-white p-6 text-center">
       <h1 class="text-xl font-bold">Subham Fancy Store</h1>
       <p class="text-sm opacity-80">Business Management System</p>
     </div>
 
     <div class="flex bg-gray-700">
-      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600 active:bg-red-500" onclick="showTab(event, 'sale')">Sales</button>
+      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab(event, 'sale')">Sales</button>
       <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab(event, 'expense')">Expenses</button>
       <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab(event, 'loan')">Loans</button>
       <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab(event, 'due')">Dues</button>
@@ -43,23 +56,86 @@
 
       <!-- Sales -->
       <div id="sale-form" class="form-section active">
-        <h2 class="text-xl font-bold mb-4">Add Sale</h2>
-        <form id="saleForm" class="space-y-4">
-          <div>
-            <label for="productName" class="block font-semibold text-gray-700 mb-1">Product Name</label>
-            <input id="productName" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+        <h2 class="text-xl font-bold mb-4">Sales Management</h2>
+        
+        <!-- Sales Tabs -->
+        <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
+          <button class="sales-tab flex-1 p-3 text-gray-700 hover:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')">Add Sale</button>
+          <button class="sales-tab flex-1 p-3 text-gray-700 hover:bg-gray-200" onclick="showSalesTab(event, 'view-sales')">View Sales</button>
+        </div>
+        
+        <!-- Add Sale Form -->
+        <div id="add-sale" class="sales-content active">
+          <h3 class="text-lg font-semibold mb-3">Add New Sale</h3>
+          <form id="saleForm" class="space-y-4">
+            <div>
+              <label for="productName" class="block font-semibold text-gray-700 mb-1">Product Name</label>
+              <input id="productName" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+            </div>
+            <div>
+              <label for="costPrice" class="block font-semibold text-gray-700 mb-1">Cost Price (₹)</label>
+              <input type="number" id="costPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+            </div>
+            <div>
+              <label for="sellingPrice" class="block font-semibold text-gray-700 mb-1">Selling Price (₹)</label>
+              <input type="number" id="sellingPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+            </div>
+            <div>
+              <label for="saleDate" class="block font-semibold text-gray-700 mb-1">Sale Date</label>
+              <input type="date" id="saleDate" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+            </div>
+            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg">Add Sale</button>
+          </form>
+          <div id="sale-message" class="mt-3 text-center font-semibold hidden"></div>
+        </div>
+        
+        <!-- View Sales -->
+        <div id="view-sales" class="sales-content hidden">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Daily Sales</h3>
+            <div class="flex items-center space-x-2">
+              <button class="date-nav-btn" onclick="changeDate(-1)">← Previous</button>
+              <span id="selected-date" class="font-medium px-3 py-1 bg-blue-100 rounded-lg"></span>
+              <button class="date-nav-btn" onclick="changeDate(1)">Next →</button>
+            </div>
           </div>
-          <div>
-            <label for="costPrice" class="block font-semibold text-gray-700 mb-1">Cost Price (₹)</label>
-            <input type="number" id="costPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+          
+          <!-- Daily Summary -->
+          <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <div id="daily-total-sales" class="text-xl font-bold text-gray-800">0</div>
+              <div class="text-gray-600 text-sm">Total Sales</div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+              <div id="daily-total-revenue" class="text-xl font-bold text-gray-800">₹0</div>
+              <div class="text-gray-600 text-sm">Total Revenue</div>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+              <div id="daily-total-profit" class="text-xl font-bold text-gray-800">₹0</div>
+              <div class="text-gray-600 text-sm">Total Profit</div>
+            </div>
           </div>
-          <div>
-            <label for="sellingPrice" class="block font-semibold text-gray-700 mb-1">Selling Price (₹)</label>
-            <input type="number" id="sellingPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+          
+          <!-- Sales Table -->
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="py-2 px-4 border-b text-left">Product</th>
+                  <th class="py-2 px-4 border-b text-right">Cost Price</th>
+                  <th class="py-2 px-4 border-b text-right">Selling Price</th>
+                  <th class="py-2 px-4 border-b text-right">Profit</th>
+                </tr>
+              </thead>
+              <tbody id="sales-table-body">
+                <!-- Sales data will be populated here -->
+              </tbody>
+            </table>
+            <div id="no-sales-message" class="text-center py-4 text-gray-500 hidden">
+              No sales recorded for this day.
+            </div>
           </div>
-          <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg">Add Sale</button>
-        </form>
-        <div id="sale-message" class="mt-3 text-center font-semibold hidden"></div>
+        </div>
       </div>
 
       <!-- Expenses -->
@@ -186,7 +262,37 @@
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbyPfYYTsnnNFXA8asOqfYqDAgRS0KTlhNanQ-OxgMnzbZ8tfesHoNDCe8tINGX7bi7DYA/exec';
-
+    
+    // Current date for sales view
+    let currentViewDate = new Date();
+    
+    // Format date as YYYY-MM-DD
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    
+    // Format date for display
+    function formatDateDisplay(date) {
+      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+    
+    // Change date for sales view
+    function changeDate(days) {
+      currentViewDate.setDate(currentViewDate.getDate() + days);
+      updateDateDisplay();
+      loadDailySales();
+    }
+    
+    // Update the date display
+    function updateDateDisplay() {
+      document.getElementById('selected-date').textContent = formatDateDisplay(currentViewDate);
+    }
+    
+    // Show main tabs
     function showTab(event, tabName) {
       // Hide all forms
       document.querySelectorAll('.form-section').forEach(section => {
@@ -206,6 +312,97 @@
       if (tabName === 'dashboard') {
         loadDashboard();
       }
+      
+      // If sales is selected, load today's sales
+      if (tabName === 'sale') {
+        // Reset to today's date
+        currentViewDate = new Date();
+        updateDateDisplay();
+        // Set default tab to add sale
+        showSalesTab(null, 'add-sale');
+      }
+    }
+    
+    // Show sales tabs
+    function showSalesTab(event, tabName) {
+      // Hide all sales content
+      document.querySelectorAll('.sales-content').forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      // Remove active class from all sales tabs
+      document.querySelectorAll('.sales-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected sales content and activate tab
+      document.getElementById(tabName).classList.remove('hidden');
+      if (event) {
+        event.target.classList.add('active');
+      } else {
+        // Default to first tab if no event
+        document.querySelector('.sales-tab').classList.add('active');
+      }
+      
+      // If viewing sales, load the data
+      if (tabName === 'view-sales') {
+        loadDailySales();
+      }
+    }
+    
+    // Load daily sales for the selected date
+    async function loadDailySales() {
+      try {
+        const dateStr = formatDate(currentViewDate);
+        const response = await fetch(`${API_URL}?type=dailySales&date=${dateStr}`, {
+          redirect: "follow",
+          method: 'GET',
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+        });
+        
+        const data = await response.json();
+        
+        // Update summary cards
+        document.getElementById('daily-total-sales').textContent = data.totalSales || 0;
+        document.getElementById('daily-total-revenue').textContent = '₹' + (data.totalRevenue || 0).toFixed(2);
+        document.getElementById('daily-total-profit').textContent = '₹' + (data.totalProfit || 0).toFixed(2);
+        
+        // Update sales table
+        const tableBody = document.getElementById('sales-table-body');
+        const noSalesMessage = document.getElementById('no-sales-message');
+        
+        if (data.sales && data.sales.length > 0) {
+          tableBody.innerHTML = '';
+          noSalesMessage.classList.add('hidden');
+          
+          data.sales.forEach(sale => {
+            const profit = sale.sellingPrice - sale.costPrice;
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-gray-50';
+            row.innerHTML = `
+              <td class="py-2 px-4 border-b">${sale.productName}</td>
+              <td class="py-2 px-4 border-b text-right">₹${sale.costPrice.toFixed(2)}</td>
+              <td class="py-2 px-4 border-b text-right">₹${sale.sellingPrice.toFixed(2)}</td>
+              <td class="py-2 px-4 border-b text-right">₹${profit.toFixed(2)}</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        } else {
+          tableBody.innerHTML = '';
+          noSalesMessage.classList.remove('hidden');
+        }
+        
+      } catch (error) {
+        console.error('Error loading daily sales:', error);
+        // Set default values if sales fail to load
+        document.getElementById('daily-total-sales').textContent = '0';
+        document.getElementById('daily-total-revenue').textContent = '₹0';
+        document.getElementById('daily-total-profit').textContent = '₹0';
+        document.getElementById('sales-table-body').innerHTML = '';
+        document.getElementById('no-sales-message').classList.remove('hidden');
+      }
     }
 
     // Sales Form Handler
@@ -214,7 +411,8 @@
       await submitForm('sale', {
         productName: document.getElementById('productName').value,
         costPrice: parseFloat(document.getElementById('costPrice').value),
-        sellingPrice: parseFloat(document.getElementById('sellingPrice').value)
+        sellingPrice: parseFloat(document.getElementById('sellingPrice').value),
+        date: document.getElementById('saleDate').value
       }, 'sale-message');
     });
 
@@ -278,6 +476,11 @@
           messageElement.className = 'mt-3 text-center font-semibold message success';
           messageElement.classList.remove('hidden');
           event.target.reset();
+          
+          // If we're in the sales view, refresh the data
+          if (type === 'sale' && document.getElementById('view-sales').classList.contains('hidden') === false) {
+            loadDailySales();
+          }
         } else {
           throw new Error(result.message);
         }
@@ -333,10 +536,17 @@
       }
     }
 
-    // Initialize the first tab as active
+    // Initialize the page
     document.addEventListener('DOMContentLoaded', () => {
+      // Set default date for sale form to today
+      document.getElementById('saleDate').value = formatDate(new Date());
+      
+      // Set up initial active tabs
       document.querySelector('.nav-tab').classList.add('active');
       document.getElementById('sale-form').classList.add('active');
+      updateDateDisplay();
+      
+      // Load initial data
       loadDashboard();
     });
   </script>
