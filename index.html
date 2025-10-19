@@ -239,6 +239,7 @@
                 button.textContent = 'Saving...';
                 
                 const response = await fetch(API_URL, {
+                    redirect: "follow",
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
