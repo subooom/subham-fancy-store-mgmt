@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Subham Fancy Store</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .form-section {
+      display: none;
+    }
+    .form-section.active {
+      display: block;
+    }
+    .nav-tab.active {
+      background-color: #dc2626; /* red-600 */
+    }
+    .message.success {
+      color: #059669; /* green-600 */
+    }
+    .message.error {
+      color: #dc2626; /* red-600 */
+    }
+  </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 p-5 font-sans">
   <div class="max-w-md mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
@@ -14,18 +31,18 @@
     </div>
 
     <div class="flex bg-gray-700">
-      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600 active:bg-red-500" onclick="showTab('sale')">Sales</button>
-      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab('expense')">Expenses</button>
-      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab('loan')">Loans</button>
-      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab('due')">Dues</button>
-      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab('dashboard')">Dashboard</button>
+      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600 active:bg-red-500" onclick="showTab(event, 'sale')">Sales</button>
+      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab(event, 'expense')">Expenses</button>
+      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab(event, 'loan')">Loans</button>
+      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab(event, 'due')">Dues</button>
+      <button class="nav-tab flex-1 p-3 text-white hover:bg-gray-600" onclick="showTab(event, 'dashboard')">Dashboard</button>
     </div>
 
     <!-- Forms Container -->
     <div class="p-6">
 
       <!-- Sales -->
-      <div id="sale-form" class="form-section block">
+      <div id="sale-form" class="form-section active">
         <h2 class="text-xl font-bold mb-4">Add Sale</h2>
         <form id="saleForm" class="space-y-4">
           <div>
@@ -46,7 +63,7 @@
       </div>
 
       <!-- Expenses -->
-      <div id="expense-form" class="form-section hidden">
+      <div id="expense-form" class="form-section">
         <h2 class="text-xl font-bold mb-4">Add Expense</h2>
         <form id="expenseForm" class="space-y-4">
           <div>
@@ -75,7 +92,7 @@
       </div>
 
       <!-- Loans -->
-      <div id="loan-form" class="form-section hidden">
+      <div id="loan-form" class="form-section">
         <h2 class="text-xl font-bold mb-4">Loan Management</h2>
         <form id="loanForm" class="space-y-4">
           <div>
@@ -112,7 +129,7 @@
       </div>
 
       <!-- Dues -->
-      <div id="due-form" class="form-section hidden">
+      <div id="due-form" class="form-section">
         <h2 class="text-xl font-bold mb-4">Due Management</h2>
         <form id="dueForm" class="space-y-4">
           <div>
@@ -141,7 +158,7 @@
       </div>
 
       <!-- Dashboard -->
-      <div id="dashboard" class="form-section hidden">
+      <div id="dashboard-form" class="form-section">
         <h2 class="text-xl font-bold mb-4 text-center">Business Dashboard</h2>
         <div class="grid grid-cols-2 gap-4 mb-5">
           <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-blue-500">
@@ -167,146 +184,161 @@
     </div>
   </div>
 
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyPfYYTsnnNFXA8asOqfYqDAgRS0KTlhNanQ-OxgMnzbZ8tfesHoNDCe8tINGX7bi7DYA/exec';
 
-    <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyPfYYTsnnNFXA8asOqfYqDAgRS0KTlhNanQ-OxgMnzbZ8tfesHoNDCe8tINGX7bi7DYA/exec';
+    function showTab(event, tabName) {
+      // Hide all forms
+      document.querySelectorAll('.form-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected form and activate tab
+      document.getElementById(tabName + '-form').classList.add('active');
+      event.target.classList.add('active');
+      
+      // If dashboard is selected, load dashboard data
+      if (tabName === 'dashboard') {
+        loadDashboard();
+      }
+    }
 
-        function showTab(tabName) {
-            // Hide all forms
-            document.querySelectorAll('.form-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected form and activate tab
-            document.getElementById(tabName + '-form').classList.add('active');
-            event.target.classList.add('active');
-        }
+    // Sales Form Handler
+    document.getElementById('saleForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitForm('sale', {
+        productName: document.getElementById('productName').value,
+        costPrice: parseFloat(document.getElementById('costPrice').value),
+        sellingPrice: parseFloat(document.getElementById('sellingPrice').value)
+      }, 'sale-message');
+    });
 
-        // Sales Form Handler
-        document.getElementById('saleForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            await submitForm('sale', {
-                productName: document.getElementById('productName').value,
-                costPrice: parseFloat(document.getElementById('costPrice').value),
-                sellingPrice: parseFloat(document.getElementById('sellingPrice').value)
-            }, 'sale-message');
+    // Expense Form Handler
+    document.getElementById('expenseForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitForm('expense', {
+        description: document.getElementById('description').value,
+        category: document.getElementById('category').value,
+        amount: parseFloat(document.getElementById('amount').value)
+      }, 'expense-message');
+    });
+
+    // Loan Form Handler
+    document.getElementById('loanForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitForm('loan', {
+        type: document.getElementById('loanType').value,
+        person: document.getElementById('person').value,
+        amount: parseFloat(document.getElementById('loanAmount').value),
+        status: document.getElementById('status').value,
+        notes: document.getElementById('loanNotes').value
+      }, 'loan-message');
+    });
+
+    // Due Form Handler
+    document.getElementById('dueForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitForm('due', {
+        customerName: document.getElementById('customerName').value,
+        amount: parseFloat(document.getElementById('dueAmount').value),
+        status: document.getElementById('dueStatus').value,
+        notes: document.getElementById('dueNotes').value
+      }, 'due-message');
+    });
+
+    async function submitForm(type, data, messageElementId) {
+      const messageElement = document.getElementById(messageElementId);
+      const button = event.target.querySelector('button');
+      
+      try {
+        button.disabled = true;
+        button.textContent = 'Saving...';
+        
+        const response = await fetch(API_URL, {
+          redirect: "follow",
+          method: 'POST',
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify({
+            type: type,
+            ...data
+          })
         });
-
-        // Expense Form Handler
-        document.getElementById('expenseForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            await submitForm('expense', {
-                description: document.getElementById('description').value,
-                category: document.getElementById('category').value,
-                amount: parseFloat(document.getElementById('amount').value)
-            }, 'expense-message');
-        });
-
-        // Loan Form Handler
-        document.getElementById('loanForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            await submitForm('loan', {
-                type: document.getElementById('loanType').value,
-                person: document.getElementById('person').value,
-                amount: parseFloat(document.getElementById('loanAmount').value),
-                status: document.getElementById('status').value,
-                notes: document.getElementById('loanNotes').value
-            }, 'loan-message');
-        });
-
-        // Due Form Handler
-        document.getElementById('dueForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            await submitForm('due', {
-                customerName: document.getElementById('customerName').value,
-                amount: parseFloat(document.getElementById('dueAmount').value),
-                status: document.getElementById('dueStatus').value,
-                notes: document.getElementById('dueNotes').value
-            }, 'due-message');
-        });
-
-        async function submitForm(type, data, messageElementId) {
-            const messageElement = document.getElementById(messageElementId);
-            const button = event.target.querySelector('button');
-            
-            try {
-                button.disabled = true;
-                button.textContent = 'Saving...';
-                
-                const response = await fetch(API_URL, {
-                    redirect: "follow",
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "text/plain;charset=utf-8",
-
-                    },
-                    body: JSON.stringify({
-                        type: type,
-                        ...data
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    messageElement.textContent = result.message;
-                    messageElement.className = 'message success';
-                    event.target.reset();
-                } else {
-                    throw new Error(result.message);
-                }
-                
-            } catch (error) {
-                messageElement.textContent = 'Error: ' + error.message;
-                messageElement.className = 'message error';
-            } finally {
-                button.disabled = false;
-                button.textContent = getButtonText(type);
-                
-                // Clear message after 3 seconds
-                setTimeout(() => {
-                    messageElement.textContent = '';
-                    messageElement.className = 'message';
-                }, 3000);
-            }
+        
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+          messageElement.textContent = result.message;
+          messageElement.className = 'mt-3 text-center font-semibold message success';
+          messageElement.classList.remove('hidden');
+          event.target.reset();
+        } else {
+          throw new Error(result.message);
         }
+        
+      } catch (error) {
+        messageElement.textContent = 'Error: ' + error.message;
+        messageElement.className = 'mt-3 text-center font-semibold message error';
+        messageElement.classList.remove('hidden');
+      } finally {
+        button.disabled = false;
+        button.textContent = getButtonText(type);
+        
+        // Clear message after 3 seconds
+        setTimeout(() => {
+          messageElement.textContent = '';
+          messageElement.className = 'mt-3 text-center font-semibold hidden';
+        }, 3000);
+      }
+    }
 
-        function getButtonText(type) {
-            const buttonTexts = {
-                'sale': 'Add Sale',
-                'expense': 'Add Expense',
-                'loan': 'Add Loan Entry',
-                'due': 'Add Due Entry'
-            };
-            return buttonTexts[type];
-        }
+    function getButtonText(type) {
+      const buttonTexts = {
+        'sale': 'Add Sale',
+        'expense': 'Add Expense',
+        'loan': 'Add Loan Entry',
+        'due': 'Add Due Entry'
+      };
+      return buttonTexts[type];
+    }
 
-        async function loadDashboard() {
-            try {
-                const response = await fetch(API_URL + '?type=dashboard',{
-                    redirect: "follow",
-                    headers: {
-                      "Content-Type": "text/plain;charset=utf-8",
-                    },
-                });
-                const data = await response.json();
-                
-                document.getElementById('totalSales').textContent = data.totalSales || 0;
-                document.getElementById('totalProfit').textContent = '₹' + (data.totalProfit || 0).toFixed(2);
-                document.getElementById('savings').textContent = '₹' + (data.savings || 0).toFixed(2);
-                document.getElementById('reinvestment').textContent = '₹' + (data.reinvestment || 0).toFixed(2);
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-            }
-        }
+    async function loadDashboard() {
+      try {
+        const response = await fetch(API_URL + '?type=dashboard', {
+          redirect: "follow",
+          method: 'GET',
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+        });
+        const data = await response.json();
+        
+        document.getElementById('totalSales').textContent = data.totalSales || 0;
+        document.getElementById('totalProfit').textContent = '₹' + (data.totalProfit || 0).toFixed(2);
+        document.getElementById('savings').textContent = '₹' + (data.savings || 0).toFixed(2);
+        document.getElementById('reinvestment').textContent = '₹' + (data.reinvestment || 0).toFixed(2);
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+        // Set default values if dashboard fails to load
+        document.getElementById('totalSales').textContent = '0';
+        document.getElementById('totalProfit').textContent = '₹0';
+        document.getElementById('savings').textContent = '₹0';
+        document.getElementById('reinvestment').textContent = '₹0';
+      }
+    }
 
-        // Load dashboard data when page loads
-        document.addEventListener('DOMContentLoaded', loadDashboard);
-    </script>
+    // Initialize the first tab as active
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('.nav-tab').classList.add('active');
+      document.getElementById('sale-form').classList.add('active');
+      loadDashboard();
+    });
+  </script>
 </body>
 </html>
