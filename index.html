@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subham Fancy Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #34495e;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .nav-tab.active {
+            background: #e74c3c;
+        }
+
+        .nav-tab:hover {
+            background: #3c5a78;
+        }
+
+        .form-container {
+            padding: 25px;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #c0392b;
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .dashboard {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .stat-card.savings {
+            border-left-color: #27ae60;
+        }
+
+        .stat-card.reinvestment {
+            border-left-color: #e74c3c;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Subham Fancy Store</h1>
+            <p>Business Management System</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('sale')">Sales</button>
+            <button class="nav-tab" onclick="showTab('expense')">Expenses</button>
+            <button class="nav-tab" onclick="showTab('loan')">Loans</button>
+            <button class="nav-tab" onclick="showTab('due')">Dues</button>
+            <button class="nav-tab" onclick="showTab('dashboard')">Dashboard</button>
+        </div>
+
+        <!-- Sales Form -->
+        <div class="form-container">
+            <div id="sale-form" class="form-section active">
+                <h2>Add Sale</h2>
+                <form id="saleForm">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="costPrice">Cost Price (₹)</label>
+                        <input type="number" id="costPrice" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sellingPrice">Selling Price (₹)</label>
+                        <input type="number" id="sellingPrice" step="0.01" required>
+                    </div>
+                    <button type="submit" class="btn">Add Sale</button>
+                </form>
+                <div id="sale-message" class="message"></div>
+            </div>
+
+            <!-- Expense Form -->
+            <div id="expense-form" class="form-section">
+                <h2>Add Expense</h2>
+                <form id="expenseForm">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Supplies">Supplies</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount (₹)</label>
+                        <input type="number" id="amount" step="0.01" required>
+                    </div>
+                    <button type="submit" class="btn">Add Expense</button>
+                </form>
+                <div id="expense-message" class="message"></div>
+            </div>
+
+            <!-- Loan Form -->
+            <div id="loan-form" class="form-section">
+                <h2>Loan Management</h2>
+                <form id="loanForm">
+                    <div class="form-group">
+                        <label for="loanType">Type</label>
+                        <select id="loanType" required>
+                            <option value="">Select Type</option>
+                            <option value="Loan Taken">Loan Taken</option>
+                            <option value="Loan Repaid">Loan Repaid</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="person">Person/Organization</label>
+                        <input type="text" id="person" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanAmount">Amount (₹)</label>
+                        <input type="number" id="loanAmount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Overdue">Overdue</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanNotes">Notes (Optional)</label>
+                        <textarea id="loanNotes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Add Loan Entry</button>
+                </form>
+                <div id="loan-message" class="message"></div>
+            </div>
+
+            <!-- Due Form -->
+            <div id="due-form" class="form-section">
+                <h2>Due Management</h2>
+                <form id="dueForm">
+                    <div class="form-group">
+                        <label for="customerName">Customer Name</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueAmount">Amount Due (₹)</label>
+                        <input type="number" id="dueAmount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueStatus">Status</label>
+                        <select id="dueStatus" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Overdue">Overdue</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueNotes">Notes (Optional)</label>
+                        <textarea id="dueNotes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Add Due Entry</button>
+                </form>
+                <div id="due-message" class="message"></div>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="dashboard" class="form-section">
+                <div class="dashboard">
+                    <h2>Business Dashboard</h2>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalSales">0</div>
+                            <div class="stat-label">Total Sales</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalProfit">₹0</div>
+                            <div class="stat-label">Total Profit</div>
+                        </div>
+                        <div class="stat-card savings">
+                            <div class="stat-value" id="savings">₹0</div>
+                            <div class="stat-label">Savings (40%)</div>
+                        </div>
+                        <div class="stat-card reinvestment">
+                            <div class="stat-value" id="reinvestment">₹0</div>
+                            <div class="stat-label">Reinvestment (60%)</div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="loadDashboard()">Refresh Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+
+        function showTab(tabName) {
+            // Hide all forms
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected form and activate tab
+            document.getElementById(tabName + '-form').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Sales Form Handler
+        document.getElementById('saleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm('sale', {
+                productName: document.getElementById('productName').value,
+                costPrice: parseFloat(document.getElementById('costPrice').value),
+                sellingPrice: parseFloat(document.getElementById('sellingPrice').value)
+            }, 'sale-message');
+        });
+
+        // Expense Form Handler
+        document.getElementById('expenseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm('expense', {
+                description: document.getElementById('description').value,
+                category: document.getElementById('category').value,
+                amount: parseFloat(document.getElementById('amount').value)
+            }, 'expense-message');
+        });
+
+        // Loan Form Handler
+        document.getElementById('loanForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm('loan', {
+                type: document.getElementById('loanType').value,
+                person: document.getElementById('person').value,
+                amount: parseFloat(document.getElementById('loanAmount').value),
+                status: document.getElementById('status').value,
+                notes: document.getElementById('loanNotes').value
+            }, 'loan-message');
+        });
+
+        // Due Form Handler
+        document.getElementById('dueForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await submitForm('due', {
+                customerName: document.getElementById('customerName').value,
+                amount: parseFloat(document.getElementById('dueAmount').value),
+                status: document.getElementById('dueStatus').value,
+                notes: document.getElementById('dueNotes').value
+            }, 'due-message');
+        });
+
+        async function submitForm(type, data, messageElementId) {
+            const messageElement = document.getElementById(messageElementId);
+            const button = event.target.querySelector('button');
+            
+            try {
+                button.disabled = true;
+                button.textContent = 'Saving...';
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        type: type,
+                        ...data
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    messageElement.textContent = result.message;
+                    messageElement.className = 'message success';
+                    event.target.reset();
+                } else {
+                    throw new Error(result.message);
+                }
+                
+            } catch (error) {
+                messageElement.textContent = 'Error: ' + error.message;
+                messageElement.className = 'message error';
+            } finally {
+                button.disabled = false;
+                button.textContent = getButtonText(type);
+                
+                // Clear message after 3 seconds
+                setTimeout(() => {
+                    messageElement.textContent = '';
+                    messageElement.className = 'message';
+                }, 3000);
+            }
+        }
+
+        function getButtonText(type) {
+            const buttonTexts = {
+                'sale': 'Add Sale',
+                'expense': 'Add Expense',
+                'loan': 'Add Loan Entry',
+                'due': 'Add Due Entry'
+            };
+            return buttonTexts[type];
+        }
+
+        async function loadDashboard() {
+            try {
+                const response = await fetch(API_URL + '?type=dashboard');
+                const data = await response.json();
+                
+                document.getElementById('totalSales').textContent = data.totalSales || 0;
+                document.getElementById('totalProfit').textContent = '₹' + (data.totalProfit || 0).toFixed(2);
+                document.getElementById('savings').textContent = '₹' + (data.savings || 0).toFixed(2);
+                document.getElementById('reinvestment').textContent = '₹' + (data.reinvestment || 0).toFixed(2);
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        // Load dashboard data when page loads
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>
