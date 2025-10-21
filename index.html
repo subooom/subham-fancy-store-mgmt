@@ -476,7 +476,7 @@
           messageElement.textContent = result.message;
           messageElement.className = 'mt-3 text-center font-semibold message success';
           messageElement.classList.remove('hidden');
-          const form = document.getElementById('saleForm')
+          const form = document.getElementById(`${type}Form`)
           form.reset();
           
           // If we're in the sales view, refresh the data
