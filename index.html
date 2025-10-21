@@ -141,7 +141,14 @@
 
       <!-- Expenses -->
       <div id="expense-form" class="form-section">
-        <h2 class="text-xl font-bold mb-4">Add Expense</h2>
+        <h2 class="text-xl font-bold mb-4">Expense Management</h2>
+        
+        <!-- Expenses Tabs -->
+        <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
+          <button class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')">Add Expense</button>
+          <button class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200" onclick="showSalesTab(event, 'view-sales')">View Expense</button>
+        </div>
+        <h2 class="text-xl font-bold mb-4">Add an Expense</h2>
         <form id="expenseForm" class="space-y-4">
           <div>
             <label for="description" class="block font-semibold text-gray-700 mb-1">Description</label>
@@ -171,6 +178,13 @@
       <!-- Loans -->
       <div id="loan-form" class="form-section">
         <h2 class="text-xl font-bold mb-4">Loan Management</h2>
+        
+        <!-- Loans Tabs -->
+        <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
+          <button class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')">Add Loan</button>
+          <button class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200" onclick="showSalesTab(event, 'view-sales')">View Loans</button>
+        </div>
+        <h2 class="text-xl font-bold mb-4">Add a Loan</h2>
         <form id="loanForm" class="space-y-4">
           <div>
             <label for="loanType" class="block font-semibold text-gray-700 mb-1">Type</label>
@@ -207,7 +221,14 @@
 
       <!-- Dues -->
       <div id="due-form" class="form-section">
-        <h2 class="text-xl font-bold mb-4">Due Management</h2>
+        <h2 class="text-xl font-bold mb-4">Dues Management</h2>
+        
+        <!-- Dues Tabs -->
+        <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
+          <button class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')">Add Due</button>
+          <button class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200" onclick="showSalesTab(event, 'view-sales')">View Dues</button>
+        </div>
+        <h2 class="text-xl font-bold mb-4">Add a Due</h2>
         <form id="dueForm" class="space-y-4">
           <div>
             <label for="customerName" class="block font-semibold text-gray-700 mb-1">Customer Name</label>
