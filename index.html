@@ -86,7 +86,6 @@ x`<!DOCTYPE html>
             <button class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')" data-i18n="tabs.sales.add_sale">Add Sale</button>
             <button class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200" onclick="showSalesTab(event, 'view-sales')" data-i18n="tabs.sales.view_sale">View Sales</button>
           </div>
-          
           <!-- Add Sale Form -->
           <div id="add-sale" class="sales-content active">
             <h3 class="text-lg font-semibold mb-3" data-i18n="tabs.sales.add_new_sale">Add New Sale</h3>
@@ -95,18 +94,92 @@ x`<!DOCTYPE html>
                 <label for="productName" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.product_name">Product Name</label>
                 <input id="productName" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
               </div>
-              <div>
-                <label for="costPrice" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.cost_price">Cost Price (₹)</label>
-                <input type="number" id="costPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+              
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="costPrice" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.cost_price">Cost Price (₹)</label>
+                  <input type="number" id="costPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+                </div>
+                <div>
+                  <label for="sellingPrice" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.selling_price">Selling Price (₹)</label>
+                  <input type="number" id="sellingPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+                </div>
               </div>
+              
               <div>
-                <label for="sellingPrice" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.selling_price">Selling Price (₹)</label>
-                <input type="number" id="sellingPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+                <label for="quantity" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.quantity">Quantity</label>
+                <input type="number" id="quantity" value="1" min="1" step="1" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
               </div>
+              
+              <div>
+                <label class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.payment_method">Payment Method</label>
+                
+                <!-- Single Payment Method -->
+                <div id="single-payment-section">
+                  <select id="paymentMethod" class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none">
+                    <option value="" data-i18n="tabs.sales.form.select_payment_method">Select Payment Method</option>
+                    <!-- Payment methods will be populated by JavaScript -->
+                  </select>
+                </div>
+                
+                <!-- Split Payment Toggle -->
+                <div class="mt-2">
+                  <label class="inline-flex items-center">
+                    <input type="checkbox" id="splitPaymentToggle" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                    <span class="ml-2 text-sm text-gray-600" data-i18n="tabs.sales.form.split_payment">Split Payment</span>
+                  </label>
+                </div>
+                
+                <!-- Split Payment Methods -->
+                <div id="split-payment-section" class="hidden mt-3 space-y-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div id="split-payment-methods">
+                    <!-- Split payment rows will be added here -->
+                  </div>
+                  
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm font-medium text-gray-700" data-i18n="tabs.sales.form.total_payment">Total Payment:</span>
+                    <span id="split-payment-total" class="text-sm font-bold text-gray-900">₹0.00</span>
+                  </div>
+                  
+                  <div id="split-payment-error" class="text-sm text-red-600 hidden" data-i18n="tabs.sales.form.total_payment_mismatch">
+                    Total payment does not match selling price
+                  </div>
+                  
+                  <button type="button" id="add-payment-method" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg text-sm" data-i18n="tabs.sales.form.add_payment_method">
+                    Add Payment Method
+                  </button>
+                </div>
+              </div>
+              
               <div>
                 <label for="saleDate" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.sale_date">Sale Date</label>
                 <input type="date" id="saleDate" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
               </div>
+              
+              <div>
+                <label for="saleNotes" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.notes">Notes (Optional)</label>
+                <textarea id="saleNotes" rows="2" class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"></textarea>
+              </div>
+              
+              <!-- Calculation Summary -->
+              <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <h4 class="font-semibold text-blue-800 mb-2" data-i18n="tabs.sales.form.calculation_summary">Calculation Summary</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span data-i18n="tabs.sales.form.total_cost">Total Cost:</span>
+                    <span id="total-cost-display" class="font-medium">₹0.00</span>
+                  </div>
+                  <div>
+                    <span data-i18n="tabs.sales.form.total_selling">Total Selling:</span>
+                    <span id="total-selling-display" class="font-medium">₹0.00</span>
+                  </div>
+                  <div class="col-span-2">
+                    <span data-i18n="tabs.sales.form.total_profit">Total Profit:</span>
+                    <span id="total-profit-display" class="font-medium text-green-600">₹0.00</span>
+                  </div>
+                </div>
+              </div>
+              
               <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg" data-i18n="tabs.sales.form.submit">Add Sale</button>
             </form>
             <div id="sale-message" class="mt-3 text-center font-semibold hidden"></div>
@@ -304,6 +377,8 @@ x`<!DOCTYPE html>
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbytLSBszyk3v78evYr0zIPgBUXo4dCkfLgRr1WYtLgKfOJvw8sFFpvaA-zcjEaXGeeI5w/exec';
     
+    let paymentMethodsList = [];
+    let splitPaymentRows = [];
     // Current date for sales view
     let currentViewDate = new Date();
     
@@ -648,6 +723,237 @@ x`<!DOCTYPE html>
   localeSelect.addEventListener("change", (e) => {
     const locale = e.target.value;
     fetchTranslations(locale);
+  });
+  // Add these variables at the top with other global variables
+  
+  // Add this function to fetch payment methods
+  async function fetchPaymentMethods() {
+    try {
+      const response = await fetch(`${API_URL}?type=paymentMethods`, {
+        redirect: "follow",
+        method: 'GET',
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+      });
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        paymentMethodsList = data.paymentMethods;
+        populatePaymentMethods();
+      }
+    } catch (error) {
+      console.error('Error fetching payment methods:', error);
+      // Fallback to default payment methods
+      paymentMethodsList = ['handcash', 'esewa_binod_kharel', 'fonepay_subham_fancy_store'];
+      populatePaymentMethods();
+    }
+  }
+  
+  // Populate payment method dropdown
+  function populatePaymentMethods() {
+    const paymentMethodSelect = document.getElementById('paymentMethod');
+    paymentMethodSelect.innerHTML = '<option value="" data-i18n="tabs.sales.form.select_payment_method">Select Payment Method</option>';
+    
+    paymentMethodsList.forEach(method => {
+      const option = document.createElement('option');
+      option.value = method;
+      option.textContent = getPaymentMethodDisplayName(method);
+      paymentMethodSelect.appendChild(option);
+    });
+  }
+  
+  // Get display name for payment method
+  function getPaymentMethodDisplayName(method) {
+    const displayNames = {
+      'handcash': 'Hand Cash',
+      'esewa_binod_kharel': 'eSewa (Binod Kharel)',
+      'fonepay_subham_fancy_store': 'Fonepay (Subham Fancy Store)'
+    };
+    return displayNames[method] || method;
+  }
+  
+  // Add split payment functionality
+  function initializeSplitPayment() {
+    const toggle = document.getElementById('splitPaymentToggle');
+    const singleSection = document.getElementById('single-payment-section');
+    const splitSection = document.getElementById('split-payment-section');
+    
+    toggle.addEventListener('change', function() {
+      if (this.checked) {
+        singleSection.classList.add('hidden');
+        splitSection.classList.remove('hidden');
+        addSplitPaymentRow(); // Add first row
+      } else {
+        singleSection.classList.remove('hidden');
+        splitSection.classList.add('hidden');
+        clearSplitPaymentRows();
+      }
+      updateSplitPaymentTotal();
+    });
+    
+    // Add payment method button
+    document.getElementById('add-payment-method').addEventListener('click', addSplitPaymentRow);
+    
+    // Real-time calculation updates
+    document.getElementById('costPrice').addEventListener('input', updateCalculations);
+    document.getElementById('sellingPrice').addEventListener('input', updateCalculations);
+    document.getElementById('quantity').addEventListener('input', updateCalculations);
+  }
+  
+  // Add a new split payment row
+  function addSplitPaymentRow() {
+    const container = document.getElementById('split-payment-methods');
+    const rowId = Date.now();
+    
+    const row = document.createElement('div');
+    row.className = 'flex gap-2 items-start';
+    row.innerHTML = `
+      <select class="flex-1 border border-gray-300 rounded p-2 text-sm payment-method-select" required>
+        <option value="">Select Method</option>
+        ${paymentMethodsList.map(method => 
+          `<option value="${method}">${getPaymentMethodDisplayName(method)}</option>`
+        ).join('')}
+      </select>
+      <input type="number" step="0.01" min="0" placeholder="Amount" 
+             class="w-32 border border-gray-300 rounded p-2 text-sm payment-amount" required>
+      <button type="button" class="remove-payment-row text-red-600 hover:text-red-800 p-2" data-row="${rowId}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    `;
+    
+    container.appendChild(row);
+    
+    // Add event listeners for the new row
+    const amountInput = row.querySelector('.payment-amount');
+    const methodSelect = row.querySelector('.payment-method-select');
+    
+    amountInput.addEventListener('input', updateSplitPaymentTotal);
+    methodSelect.addEventListener('change', updateSplitPaymentTotal);
+    
+    // Remove row button
+    row.querySelector('.remove-payment-row').addEventListener('click', function() {
+      if (container.children.length > 1) {
+        row.remove();
+        updateSplitPaymentTotal();
+      }
+    });
+    
+    splitPaymentRows.push(rowId);
+  }
+  
+  // Clear all split payment rows
+  function clearSplitPaymentRows() {
+    const container = document.getElementById('split-payment-methods');
+    container.innerHTML = '';
+    splitPaymentRows = [];
+  }
+  
+  // Update split payment total
+  function updateSplitPaymentTotal() {
+    const amountInputs = document.querySelectorAll('.payment-amount');
+    let total = 0;
+    
+    amountInputs.forEach(input => {
+      total += parseFloat(input.value) || 0;
+    });
+    
+    const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
+    const quantity = parseInt(document.getElementById('quantity').value) || 1;
+    const totalSelling = sellingPrice * quantity;
+    
+    document.getElementById('split-payment-total').textContent = `₹${total.toFixed(2)}`;
+    
+    const errorElement = document.getElementById('split-payment-error');
+    if (Math.abs(total - totalSelling) > 0.01 && total > 0) {
+      errorElement.classList.remove('hidden');
+    } else {
+      errorElement.classList.add('hidden');
+    }
+  }
+  
+  // Update calculation summary
+  function updateCalculations() {
+    const costPrice = parseFloat(document.getElementById('costPrice').value) || 0;
+    const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
+    const quantity = parseInt(document.getElementById('quantity').value) || 1;
+    
+    const totalCost = costPrice * quantity;
+    const totalSelling = sellingPrice * quantity;
+    const totalProfit = totalSelling - totalCost;
+    
+    document.getElementById('total-cost-display').textContent = `₹${totalCost.toFixed(2)}`;
+    document.getElementById('total-selling-display').textContent = `₹${totalSelling.toFixed(2)}`;
+    document.getElementById('total-profit-display').textContent = `₹${totalProfit.toFixed(2)}`;
+    
+    // Also update split payment validation
+    if (document.getElementById('splitPaymentToggle').checked) {
+      updateSplitPaymentTotal();
+    }
+  }
+  
+  // Update the sales form handler to handle new fields
+  document.getElementById('saleForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+      productName: document.getElementById('productName').value,
+      costPrice: parseFloat(document.getElementById('costPrice').value),
+      sellingPrice: parseFloat(document.getElementById('sellingPrice').value),
+      quantity: parseInt(document.getElementById('quantity').value) || 1,
+      date: document.getElementById('saleDate').value,
+      notes: document.getElementById('saleNotes').value
+    };
+    
+    // Handle payment method
+    if (document.getElementById('splitPaymentToggle').checked) {
+      // Split payment
+      const paymentBreakdown = {};
+      const methodSelects = document.querySelectorAll('.payment-method-select');
+      const amountInputs = document.querySelectorAll('.payment-amount');
+      
+      for (let i = 0; i < methodSelects.length; i++) {
+        const method = methodSelects[i].value;
+        const amount = parseFloat(amountInputs[i].value);
+        if (method && amount > 0) {
+          paymentBreakdown[method] = amount;
+        }
+      }
+      
+      formData.paymentMethod = paymentBreakdown;
+    } else {
+      // Single payment
+      const paymentMethod = document.getElementById('paymentMethod').value;
+      if (paymentMethod) {
+        formData.paymentMethod = paymentMethod;
+      }
+    }
+    
+    await submitForm('sale', formData, 'sale-message');
+  });
+  
+  // Initialize when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    // ... existing initialization code ...
+    
+    // Set default date for sale form to today
+    document.getElementById('saleDate').value = formatDate(new Date());
+    
+    // Fetch payment methods
+    fetchPaymentMethods();
+    
+    // Initialize split payment functionality
+    initializeSplitPayment();
+    
+    // Set up initial active tabs
+    document.querySelector('.nav-tab').classList.add('active');
+    document.getElementById('sale-form').classList.add('active');
+    updateDateDisplay();
+    
+    // Load initial data
+    loadDashboard();
   });
 </script>
 
