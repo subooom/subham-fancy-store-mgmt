@@ -16,10 +16,6 @@ function doPost(e) {
         return addLoan(ss, entryData);
       case 'due':
         return addDue(ss, entryData);
-      case 'translations':
-        return getTranslations(locale || 'en');
-      case 'vault':
-        return getVaultAmount();
       default:
         throw new Error("Invalid type");
     }
@@ -103,12 +99,20 @@ function successResponse(message) {
 
 // For data retrieval
 function doGet(e) {
-  if (e.parameter.type === 'dashboard') {
-    return getDashboardData();
-  } else if (e.parameter.type === 'dailySales') {
-    return getDailySales(e.parameter.date);
+  const { type, locale } = e.parameter;
+  
+  switch(type) {
+    case 'dashboard':
+      return getDashboardData();
+    case 'dailySales':
+      return getDailySales(e.parameter.date);
+    case 'translations':
+      return getTranslations(locale || 'en');
+    case 'vault':
+      return getVaultAmount();
+    default:
+      return createJsonResponse({ status: "error", message: "Invalid type parameter" })
   }
-  return HtmlService.createHtmlOutput("API is running");
 }
 
 function getDashboardData() {
