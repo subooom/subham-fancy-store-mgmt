@@ -3,7 +3,7 @@ const SHEET_ID = "YOUR_SHEET_ID_HERE"; // You'll get this after creating the she
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const { type, ...entryData } = data;
+    const { type, locale, ...entryData } = data;
     
     const ss = SpreadsheetApp.openById(SHEET_ID);
     
@@ -16,6 +16,10 @@ function doPost(e) {
         return addLoan(ss, entryData);
       case 'due':
         return addDue(ss, entryData);
+      case 'translations':
+        return getTranslations(locale || 'en');
+      case 'vault':
+        return getVaultAmount();
       default:
         throw new Error("Invalid type");
     }
@@ -181,6 +185,64 @@ function getDailySales(dateString) {
     ).setMimeType(ContentService.MimeType.JSON);
   }
 }
+function getVaultAmount() {
+  try {
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    const salesSheet = ss.getSheetByName("Sales");
+    const expensesSheet = ss.getSheetByName("Expenses");
+
+    const salesData = salesSheet.getRange(2, 5, salesSheet.getLastRow() - 1, 1).getValues(); // Selling Price
+    const expenseData = expensesSheet.getRange(2, 4, expensesSheet.getLastRow() - 1, 1).getValues(); // Amount
+
+    const totalIncome = salesData.reduce((sum, [price]) => sum + (price || 0), 0);
+    const totalExpenses = expenseData.reduce((sum, [amount]) => sum + (amount || 0), 0);
+
+    const vaultAmount = totalIncome - totalExpenses;
+
+    return ContentService.createTextOutput(
+      JSON.stringify({
+        status: "success",
+        totalIncome,
+        totalExpenses,
+        vaultAmount
+      })
+    ).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(
+      JSON.stringify({
+        status: "error",
+        message: error.message
+      })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function getTranslations(locale) {
+  try {
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    const sheet = ss.getSheetByName("Translations");
+    const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 5).getValues(); // skip header
+
+    const translations = {};
+    data.forEach(row => {
+      const [key, lang, value] = row;
+      if (lang === locale) {
+        translations[key] = value;
+      }
+    });
+
+    return ContentService.createTextOutput(
+      JSON.stringify({ status: "success", locale, translations })
+    ).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ status: "error", message: error.message })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
 
 // Optional: Helper function to initialize the spreadsheet with proper headers
 function initializeSpreadsheet() {
