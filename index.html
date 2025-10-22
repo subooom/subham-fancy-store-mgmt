@@ -594,6 +594,40 @@
       // Load initial data
       loadDashboard();
     });
-  </script>
+  </script><script>
+  const localeSelect = document.getElementById("locale-select");
+
+  async function fetchTranslations(locale) {
+    try {
+      const res = await fetch(
+        `${API_URL}?type=translations&locale=${locale}`
+      );
+      const data = await res.json();
+
+      if (data.status === "success") {
+        console.log("Translations loaded:", data.translations);
+    
+        // Example: update some UI elements (if needed)
+        // document.querySelector("#header-title").textContent = data.translations['sales_title'] || "Sales Management";
+
+        return data.translations;
+      } else {
+        console.error("Translation fetch error:", data.message);
+      }
+    } catch (err) {
+      console.error("Network error fetching translations:", err);
+    }
+  }
+
+  // Default: load English on page load
+  fetchTranslations("en");
+
+  // When locale changes
+  localeSelect.addEventListener("change", (e) => {
+    const locale = e.target.value;
+    fetchTranslations(locale);
+  });
+</script>
+
 </body>
 </html>
