@@ -524,12 +524,40 @@ x`<!DOCTYPE html>
     // Sales Form Handler
     document.getElementById('saleForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      await submitForm('sale', {
+      const formData = {
         productName: document.getElementById('productName').value,
         costPrice: parseFloat(document.getElementById('costPrice').value),
         sellingPrice: parseFloat(document.getElementById('sellingPrice').value),
-        date: document.getElementById('saleDate').value
-      }, 'sale-message');
+        quantity: parseInt(document.getElementById('quantity').value) || 1,
+        date: document.getElementById('saleDate').value,
+        notes: document.getElementById('saleNotes').value
+      };
+      
+      // Handle payment method
+      if (document.getElementById('splitPaymentToggle').checked) {
+        // Split payment
+        const paymentBreakdown = {};
+        const methodSelects = document.querySelectorAll('.payment-method-select');
+        const amountInputs = document.querySelectorAll('.payment-amount');
+        
+        for (let i = 0; i < methodSelects.length; i++) {
+          const method = methodSelects[i].value;
+          const amount = parseFloat(amountInputs[i].value);
+          if (method && amount > 0) {
+            paymentBreakdown[method] = amount;
+          }
+        }
+        
+        formData.paymentMethod = paymentBreakdown;
+      } else {
+        // Single payment
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        if (paymentMethod) {
+          formData.paymentMethod = paymentMethod;
+        }
+      }
+      
+      await submitForm('sale', formData, 'sale-message');
     });
 
     // Expense Form Handler
@@ -569,7 +597,9 @@ x`<!DOCTYPE html>
       const messageElement = document.getElementById(messageElementId);
       const button = document.querySelector(`#${type}Form button`);
       const originalText = button.textContent;
-
+      
+      console.log(button, `#${type}Form button`, originalText)
+      
       const spinnerSvg = `<div role="status">
     <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -724,9 +754,7 @@ x`<!DOCTYPE html>
     const locale = e.target.value;
     fetchTranslations(locale);
   });
-  // Add these variables at the top with other global variables
   
-  // Add this function to fetch payment methods
   async function fetchPaymentMethods() {
     try {
       const response = await fetch(`${API_URL}?type=paymentMethods`, {
@@ -893,46 +921,6 @@ x`<!DOCTYPE html>
       updateSplitPaymentTotal();
     }
   }
-  
-  // Update the sales form handler to handle new fields
-  document.getElementById('saleForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = {
-      productName: document.getElementById('productName').value,
-      costPrice: parseFloat(document.getElementById('costPrice').value),
-      sellingPrice: parseFloat(document.getElementById('sellingPrice').value),
-      quantity: parseInt(document.getElementById('quantity').value) || 1,
-      date: document.getElementById('saleDate').value,
-      notes: document.getElementById('saleNotes').value
-    };
-    
-    // Handle payment method
-    if (document.getElementById('splitPaymentToggle').checked) {
-      // Split payment
-      const paymentBreakdown = {};
-      const methodSelects = document.querySelectorAll('.payment-method-select');
-      const amountInputs = document.querySelectorAll('.payment-amount');
-      
-      for (let i = 0; i < methodSelects.length; i++) {
-        const method = methodSelects[i].value;
-        const amount = parseFloat(amountInputs[i].value);
-        if (method && amount > 0) {
-          paymentBreakdown[method] = amount;
-        }
-      }
-      
-      formData.paymentMethod = paymentBreakdown;
-    } else {
-      // Single payment
-      const paymentMethod = document.getElementById('paymentMethod').value;
-      if (paymentMethod) {
-        formData.paymentMethod = paymentMethod;
-      }
-    }
-    
-    await submitForm('sale', formData, 'sale-message');
-  });
   
   // Initialize when DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
