@@ -600,7 +600,13 @@
   async function fetchTranslations(locale) {
     try {
       const res = await fetch(
-        `${API_URL}?type=translations&locale=${locale}`
+        `${API_URL}?type=translations&locale=${locale}`, {
+          redirect: "follow",
+          method: 'GET',
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+        }
       );
       const data = await res.json();
 
