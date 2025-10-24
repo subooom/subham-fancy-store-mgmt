@@ -1,58 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Subham Fancy Store</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .form-section {
-      display: none;
-    }
-    .form-section.active {
-      display: block;
-    }
-    .nav-tab.active {
-      background-color: #dc2626; /* red-600 */
-    }
-    .sales-tab.active, .expenses-tab.active, .loans-tab.active, .dues-tab.active {
-      background-color: #4f46e5; /* indigo-600 */
-      color: white;
-    }
-    .message.success {
-      color: #059669; /* green-600 */
-    }
-    .message.error {
-      color: #dc2626; /* red-600 */
-    }
-    .date-nav-btn {
-      background-color: #e5e7eb; /* gray-200 */
-      border-radius: 0.375rem;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-    .date-nav-btn:hover {
-      background-color: #d1d5db; /* gray-300 */
-    }
-  </style>
-</head>
-<body class="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 p-5 font-sans">
-  <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
-       <div class="bg-gray-900 text-white px-8 py-5 flex items-center justify-between shadow-lg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subham Fancy Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .form-section {
+        display: none;
+      }
+      .form-section.active {
+        display: block;
+      }
+      .nav-tab.active {
+        background-color: #dc2626; /* red-600 */
+      }
+      .sales-tab.active,
+      .expenses-tab.active,
+      .loans-tab.active,
+      .dues-tab.active {
+        background-color: #4f46e5; /* indigo-600 */
+        color: white;
+      }
+      .message.success {
+        color: #059669; /* green-600 */
+      }
+      .message.error {
+        color: #dc2626; /* red-600 */
+      }
+      .date-nav-btn {
+        background-color: #e5e7eb; /* gray-200 */
+        border-radius: 0.375rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+      .date-nav-btn:hover {
+        background-color: #d1d5db; /* gray-300 */
+      }
+      .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+      }
+    </style>
+  </head>
+  <body
+    class="relative min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 p-5 font-sans"
+  >
+    <div
+      id="spinnerDiv"
+      class="fixed inset-0 bg-black/30 z-20 max-h-screen mx-auto rounded-2xl hidden"
+    >
+      <svg
+        class="mr-3 -ml-1 size-5 md:size-10 lg:size-14 animate-spin text-indigo-700"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>
+    </div>
+    <div
+      class="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden"
+    >
+      <div
+        class="bg-gray-900 text-white px-8 py-5 flex items-center justify-between shadow-lg"
+      >
         <!-- Left Section -->
         <div>
-          <h1 class="text-2xl font-semibold tracking-wide" data-i18n="business.name">Subham Fancy Store</h1>
-          <p class="text-sm text-gray-400" data-i18n="page.description">Business Management System</p>
+          <h1
+            class="text-2xl font-semibold tracking-wide"
+            data-i18n="business.name"
+          >
+            Subham Fancy Store
+          </h1>
+          <p class="text-sm text-gray-400" data-i18n="page.description">
+            Business Management System
+          </p>
         </div>
-      
+
         <!-- Right Section -->
-        <div class="flex items-center flex-wrap justify-center md:justify-start md:flex-nowrap gap-4">
+        <div
+          class="flex items-center flex-wrap justify-center md:justify-start md:flex-nowrap gap-4"
+        >
           <!-- Vault / Galla Display -->
-          <div id="vault-amount" class="bg-gray-800 px-5 py-2 rounded-xl text-sm font-medium border border-gray-700">
-            <span data-i18n="vault">Galla</span>: <span data-i18n="currency">₹</span><span id="vaultAmount">0</span>
+          <div
+            id="vault-amount"
+            class="bg-gray-800 px-5 py-2 rounded-xl text-sm font-medium border border-gray-700"
+          >
+            <span data-i18n="vault">Galla</span>:
+            <span data-i18n="currency">₹</span><span id="vaultAmount">0</span>
           </div>
-      
+
           <!-- Locale Selector -->
           <select
             id="locale-select"
@@ -63,787 +116,1440 @@
           </select>
         </div>
       </div>
-  
-  
-  
+
       <div class="flex bg-gray-700">
-        <button class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600" data-i18n="navbar.sales" onclick="showTab(event, 'sale')">Sales</button>
-        <button class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600" data-i18n="navbar.expenses" onclick="showTab(event, 'expense')">Expenses</button>
-        <button class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600" data-i18n="navbar.loans" onclick="showTab(event, 'loan')">Loans</button>
-        <button class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600" data-i18n="navbar.dues" onclick="showTab(event, 'due')">Dues</button>
-        <button class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600" data-i18n="navbar.dashboard" onclick="showTab(event, 'dashboard')">Dashboard</button>
+        <button
+          class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600"
+          data-i18n="navbar.sales"
+          onclick="showTab(event, 'sale')"
+        >
+          Sales
+        </button>
+        <button
+          class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600"
+          data-i18n="navbar.expenses"
+          onclick="showTab(event, 'expense')"
+        >
+          Expenses
+        </button>
+        <button
+          class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600"
+          data-i18n="navbar.loans"
+          onclick="showTab(event, 'loan')"
+        >
+          Loans
+        </button>
+        <button
+          class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600"
+          data-i18n="navbar.dues"
+          onclick="showTab(event, 'due')"
+        >
+          Dues
+        </button>
+        <button
+          class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600"
+          data-i18n="navbar.dashboard"
+          onclick="showTab(event, 'dashboard')"
+        >
+          Dashboard
+        </button>
       </div>
-  
+
       <!-- Forms Container -->
       <div class="p-6">
-  
         <!-- Sales -->
         <div id="sale-form" class="form-section active">
-          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.sales.title">Sales Management</h2>
-          
+          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.sales.title">
+            Sales Management
+          </h2>
+
           <!-- Sales Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
-            <button class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')" data-i18n="tabs.sales.add_sale">Add Sale</button>
-            <button class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200" onclick="showSalesTab(event, 'view-sales')" data-i18n="tabs.sales.view_sale">View Sales</button>
+            <button
+              class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
+              onclick="showSalesTab(event, 'add-sale')"
+              data-i18n="tabs.sales.add_sale"
+            >
+              Add Sale
+            </button>
+            <button
+              class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
+              onclick="showSalesTab(event, 'view-sales')"
+              data-i18n="tabs.sales.view_sale"
+            >
+              View Sales
+            </button>
           </div>
           <!-- Add Sale Form -->
           <div id="add-sale" class="sales-content active">
-            <h3 class="text-lg font-semibold mb-3" data-i18n="tabs.sales.add_new_sale">Add New Sale</h3>
+            <h3
+              class="text-lg font-semibold mb-3"
+              data-i18n="tabs.sales.add_new_sale"
+            >
+              Add New Sale
+            </h3>
             <form id="saleForm" class="space-y-4">
               <div>
-                <label for="productName" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.product_name">Product Name</label>
-                <input id="productName" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+                <label
+                  for="productName"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.sales.form.product_name"
+                  >Product Name</label
+                >
+                <input
+                  id="productName"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                />
               </div>
-              
+
               <div class="max-w-sm">
-                <label for="quantity" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.quantity">Quantity</label>
-                <input type="number" id="quantity" value="1" min="1" step="1" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+                <label
+                  for="quantity"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.sales.form.quantity"
+                  >Quantity</label
+                >
+                <input
+                  type="number"
+                  id="quantity"
+                  value="1"
+                  min="1"
+                  step="1"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                />
               </div>
-              
+
               <div class="grid grid-cols-1 gap-4">
                 <div>
-                  <label for="costPrice" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.cost_price">Cost Price (₹)</label>
-                  <input type="number" id="costPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+                  <label
+                    for="costPrice"
+                    class="block font-semibold text-gray-700 mb-1"
+                    data-i18n="tabs.sales.form.cost_price"
+                    >Cost Price (₹)</label
+                  >
+                  <input
+                    type="number"
+                    id="costPrice"
+                    step="0.01"
+                    required
+                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                  />
                 </div>
                 <div>
-                  <label for="sellingPrice" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.selling_price">Selling Price (₹)</label>
-                  <input type="number" id="sellingPrice" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+                  <label
+                    for="sellingPrice"
+                    class="block font-semibold text-gray-700 mb-1"
+                    data-i18n="tabs.sales.form.selling_price"
+                    >Selling Price (₹)</label
+                  >
+                  <input
+                    type="number"
+                    id="sellingPrice"
+                    step="0.01"
+                    required
+                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                  />
                 </div>
               </div>
-              
-              
+
               <div>
-                <label class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.payment_method">Payment Method</label>
-                
+                <label
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.sales.form.payment_method"
+                  >Payment Method</label
+                >
+
                 <!-- Single Payment Method -->
                 <div id="single-payment-section">
-                  <select id="paymentMethod" value="handcash" class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none">
-                    <option value="" data-i18n="tabs.sales.form.select_payment_method">Select Payment Method</option>
+                  <select
+                    id="paymentMethod"
+                    value="handcash"
+                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                  >
+                    <option
+                      value=""
+                      data-i18n="tabs.sales.form.select_payment_method"
+                    >
+                      Select Payment Method
+                    </option>
                     <!-- Payment methods will be populated by JavaScript -->
                   </select>
                 </div>
-                
+
                 <!-- Split Payment Toggle -->
                 <div class="mt-2">
                   <label class="inline-flex items-center">
-                    <input type="checkbox" id="splitPaymentToggle" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
-                    <span class="ml-2 text-sm text-gray-600" data-i18n="tabs.sales.form.split_payment">Split Payment</span>
+                    <input
+                      type="checkbox"
+                      id="splitPaymentToggle"
+                      class="rounded border-gray-300 text-red-600 focus:ring-red-500"
+                    />
+                    <span
+                      class="ml-2 text-sm text-gray-600"
+                      data-i18n="tabs.sales.form.split_payment"
+                      >Split Payment</span
+                    >
                   </label>
                 </div>
-                
+
                 <!-- Split Payment Methods -->
-                <div id="split-payment-section" class="hidden mt-3 space-y-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <div
+                  id="split-payment-section"
+                  class="hidden mt-3 space-y-3 p-3 bg-gray-50 rounded-lg border border-gray-200"
+                >
                   <div id="split-payment-methods">
                     <!-- Split payment rows will be added here -->
                   </div>
-                  
+
                   <div class="flex justify-between items-center">
-                    <span class="text-sm font-medium text-gray-700" data-i18n="tabs.sales.form.total_payment">Total Payment:</span>
-                    <span id="split-payment-total" class="text-sm font-bold text-gray-900">₹0.00</span>
+                    <span
+                      class="text-sm font-medium text-gray-700"
+                      data-i18n="tabs.sales.form.total_payment"
+                      >Total Payment:</span
+                    >
+                    <span
+                      id="split-payment-total"
+                      class="text-sm font-bold text-gray-900"
+                      >₹0.00</span
+                    >
                   </div>
-                  
-                  <div id="split-payment-error" class="text-sm text-red-600 hidden" data-i18n="tabs.sales.form.total_payment_mismatch">
+
+                  <div
+                    id="split-payment-error"
+                    class="text-sm text-red-600 hidden"
+                    data-i18n="tabs.sales.form.total_payment_mismatch"
+                  >
                     Total payment does not match selling price
                   </div>
-                  
-                  <button type="button" id="add-payment-method" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg text-sm" data-i18n="tabs.sales.form.add_payment_method">
+
+                  <button
+                    type="button"
+                    id="add-payment-method"
+                    class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg text-sm"
+                    data-i18n="tabs.sales.form.add_payment_method"
+                  >
                     Add Payment Method
                   </button>
                 </div>
               </div>
-              
+
               <div>
-                <label for="saleDate" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.sale_date">Sale Date</label>
-                <input type="date" id="saleDate" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none" />
+                <label
+                  for="saleDate"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.sales.form.sale_date"
+                  >Sale Date</label
+                >
+                <input
+                  type="date"
+                  id="saleDate"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                />
               </div>
-              
+
               <div>
-                <label for="saleNotes" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.sales.form.notes">Notes (Optional)</label>
-                <textarea id="saleNotes" rows="2" class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"></textarea>
+                <label
+                  for="saleNotes"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.sales.form.notes"
+                  >Notes (Optional)</label
+                >
+                <textarea
+                  id="saleNotes"
+                  rows="2"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                ></textarea>
               </div>
-              
+
               <!-- Calculation Summary -->
               <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <h4 class="font-semibold text-blue-800 mb-2" data-i18n="tabs.sales.form.calculation_summary">Calculation Summary</h4>
+                <h4
+                  class="font-semibold text-blue-800 mb-2"
+                  data-i18n="tabs.sales.form.calculation_summary"
+                >
+                  Calculation Summary
+                </h4>
                 <div class="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <span data-i18n="tabs.sales.form.total_cost">Total Cost:</span>
-                    <span id="total-cost-display" class="font-medium">₹0.00</span>
+                    <span data-i18n="tabs.sales.form.total_cost"
+                      >Total Cost:</span
+                    >
+                    <span id="total-cost-display" class="font-medium"
+                      >₹0.00</span
+                    >
                   </div>
                   <div>
-                    <span data-i18n="tabs.sales.form.total_selling">Total Selling:</span>
-                    <span id="total-selling-display" class="font-medium">₹0.00</span>
+                    <span data-i18n="tabs.sales.form.total_selling"
+                      >Total Selling:</span
+                    >
+                    <span id="total-selling-display" class="font-medium"
+                      >₹0.00</span
+                    >
                   </div>
                   <div class="col-span-2">
-                    <span data-i18n="tabs.sales.form.total_profit">Total Profit:</span>
-                    <span id="total-profit-display" class="font-medium text-green-600">₹0.00</span>
+                    <span data-i18n="tabs.sales.form.total_profit"
+                      >Total Profit:</span
+                    >
+                    <span
+                      id="total-profit-display"
+                      class="font-medium text-green-600"
+                      >₹0.00</span
+                    >
                   </div>
                 </div>
               </div>
-              
-              <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg" data-i18n="tabs.sales.form.submit">Add Sale</button>
+
+              <button
+                type="submit"
+                class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+                data-i18n="tabs.sales.form.submit"
+              >
+                Add Sale
+              </button>
             </form>
-            <div id="sale-message" class="mt-3 text-center font-semibold hidden"></div>
+            <div
+              id="sale-message"
+              class="mt-3 text-center font-semibold hidden"
+            ></div>
           </div>
-          
+
           <!-- View Sales -->
           <div id="view-sales" class="sales-content hidden">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="text-lg font-semibold" data-i18n="tabs.sales.daily_sales">Daily Sales</h3>
+            <div class="flex flex-wrap justify-between items-center mb-4">
+              <div class="flex gap-2 items-center">
+                <div id="spinnerInsert"></div>
+
+                <h3
+                  class="text-lg font-semibold"
+                  data-i18n="tabs.sales.daily_sales"
+                >
+                  Daily Sales
+                </h3>
+              </div>
               <div class="flex items-center space-x-2">
-                <button class="date-nav-btn" onclick="changeDate(-1)" data-i18n="tabs.sales.previous">← Previous</button>
-                <span id="selected-date" class="font-medium px-3 py-1 bg-blue-100 rounded-lg"></span>
-                <button class="date-nav-btn" onclick="changeDate(1)" data-i18n="tabs.sales.next">Next →</button>
+                <button
+                  class="date-nav-btn"
+                  onclick="changeDate(-1)"
+                  data-i18n="tabs.sales.previous"
+                >
+                  ← Previous
+                </button>
+                <span
+                  id="selected-date"
+                  class="font-medium px-3 py-1 bg-blue-100 rounded-lg"
+                ></span>
+                <button
+                  class="date-nav-btn"
+                  onclick="changeDate(1)"
+                  data-i18n="tabs.sales.next"
+                >
+                  Next →
+                </button>
               </div>
             </div>
-            
+
             <!-- Daily Summary -->
-            <div class="grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-3 gap-4 mb-6">
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-6"
+            >
               <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-                <div id="daily-total-sales" class="text-xl font-bold text-gray-800">0</div>
-                <div class="text-gray-600 text-sm" data-i18n="tabs.sales.total_sales">Total Sales</div>
+                <div
+                  id="daily-total-sales"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.sales.total_sales"
+                >
+                  Total Sales
+                </div>
               </div>
-              <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
-                <div id="daily-total-revenue" class="text-xl font-bold text-gray-800">₹0</div>
-                <div class="text-gray-600 text-sm" data-i18n="tabs.sales.total_revenue">Total Revenue</div>
+              <div
+                class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500"
+              >
+                <div
+                  id="daily-total-revenue"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  ₹0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.sales.total_revenue"
+                >
+                  Total Revenue
+                </div>
               </div>
-              <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
-                <div id="daily-total-profit" class="text-xl font-bold text-gray-800">₹0</div>
-                <div class="text-gray-600 text-sm" data-i18n="tabs.sales.total_profit">Total Profit</div>
+              <div
+                class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500"
+              >
+                <div
+                  id="daily-total-profit"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  ₹0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.sales.total_profit"
+                >
+                  Total Profit
+                </div>
               </div>
             </div>
-            
+
             <!-- Sales Table -->
             <div class="overflow-x-auto">
-              <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+              <table
+                class="min-w-full bg-white border border-gray-200 rounded-lg"
+              >
                 <thead>
                   <tr class="bg-gray-100">
-                    <th class="py-2 px-4 border-b text-left" data-i18n="tabs.sales.table.product">Product</th>
-                    <th class="py-2 px-4 border-b text-right" data-i18n="tabs.sales.table.cost_price">Cost Price</th>
-                    <th class="py-2 px-4 border-b text-right" data-i18n="tabs.sales.table.selling_price">Selling Price</th>
-                    <th class="py-2 px-4 border-b text-right" data-i18n="tabs.sales.table.profit">Profit</th>
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.sales.table.product"
+                    >
+                      Product
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-right"
+                      data-i18n="tabs.sales.table.cost_price"
+                    >
+                      Cost Price
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-right"
+                      data-i18n="tabs.sales.table.selling_price"
+                    >
+                      Selling Price
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-right"
+                      data-i18n="tabs.sales.table.profit"
+                    >
+                      Profit
+                    </th>
                   </tr>
                 </thead>
                 <tbody id="sales-table-body">
                   <!-- Sales data will be populated here -->
                 </tbody>
               </table>
-              <div id="no-sales-message" class="text-center py-4 text-gray-500 hidden" data-i18n="tabs.sales.no_sales">No sales recorded for this day.</div>
+              <div
+                id="no-sales-message"
+                class="text-center py-4 text-gray-500 hidden"
+                data-i18n="tabs.sales.no_sales"
+              >
+                No sales recorded for this day.
+              </div>
             </div>
           </div>
         </div>
-  
+
         <!-- Expenses -->
         <div id="expense-form" class="form-section">
-          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.expenses.title">Expense Management</h2>
-          
+          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.expenses.title">
+            Expense Management
+          </h2>
+
           <!-- Expenses Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
-            <button class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')" data-i18n="tabs.expenses.add_expense">Add Expense</button>
-            <button class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200" onclick="showSalesTab(event, 'view-sales')" data-i18n="tabs.expenses.view_expense">View Expense</button>
+            <button
+              class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
+              onclick="showSalesTab(event, 'add-sale')"
+              data-i18n="tabs.expenses.add_expense"
+            >
+              Add Expense
+            </button>
+            <button
+              class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
+              onclick="showSalesTab(event, 'view-sales')"
+              data-i18n="tabs.expenses.view_expense"
+            >
+              View Expense
+            </button>
           </div>
-          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.expenses.add_expense_title">Add an Expense</h2>
+          <h2
+            class="text-xl font-bold mb-4"
+            data-i18n="tabs.expenses.add_expense_title"
+          >
+            Add an Expense
+          </h2>
           <form id="expenseForm" class="space-y-4">
             <div>
-              <label for="description" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.expenses.form.description">Description</label>
-              <input id="description" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500" />
+              <label
+                for="description"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.expenses.form.description"
+                >Description</label
+              >
+              <input
+                id="description"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              />
             </div>
             <div>
-              <label for="category" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.expenses.form.category">Category</label>
-              <select id="category" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500">
-                <option value="" data-i18n="tabs.expenses.form.select_category">Select Category</option>
-                <option data-i18n="tabs.expenses.form.category_rent">Rent</option>
-                <option data-i18n="tabs.expenses.form.category_utilities">Utilities</option>
-                <option data-i18n="tabs.expenses.form.category_supplies">Supplies</option>
-                <option data-i18n="tabs.expenses.form.category_staff">Staff</option>
-                <option data-i18n="tabs.expenses.form.category_maintenance">Maintenance</option>
-                <option data-i18n="tabs.expenses.form.category_other">Other</option>
+              <label
+                for="category"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.expenses.form.category"
+                >Category</label
+              >
+              <select
+                id="category"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              >
+                <option value="" data-i18n="tabs.expenses.form.select_category">
+                  Select Category
+                </option>
+                <option data-i18n="tabs.expenses.form.category_rent">
+                  Rent
+                </option>
+                <option data-i18n="tabs.expenses.form.category_utilities">
+                  Utilities
+                </option>
+                <option data-i18n="tabs.expenses.form.category_supplies">
+                  Supplies
+                </option>
+                <option data-i18n="tabs.expenses.form.category_staff">
+                  Staff
+                </option>
+                <option data-i18n="tabs.expenses.form.category_maintenance">
+                  Maintenance
+                </option>
+                <option data-i18n="tabs.expenses.form.category_other">
+                  Other
+                </option>
               </select>
             </div>
             <div>
-              <label for="amount" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.expenses.form.amount">Amount (₹)</label>
-              <input type="number" id="amount" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500" />
+              <label
+                for="amount"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.expenses.form.amount"
+                >Amount (₹)</label
+              >
+              <input
+                type="number"
+                id="amount"
+                step="0.01"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              />
             </div>
-            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg" data-i18n="tabs.expenses.form.submit">Add Expense</button>
+            <button
+              type="submit"
+              class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+              data-i18n="tabs.expenses.form.submit"
+            >
+              Add Expense
+            </button>
           </form>
-          <div id="expense-message" class="mt-3 text-center font-semibold hidden"></div>
+          <div
+            id="expense-message"
+            class="mt-3 text-center font-semibold hidden"
+          ></div>
         </div>
-  
+
         <!-- Loans -->
         <div id="loan-form" class="form-section">
-          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.loans.title">Loan Management</h2>
-          
+          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.loans.title">
+            Loan Management
+          </h2>
+
           <!-- Loans Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
-            <button class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')" data-i18n="tabs.loans.add_loan">Add Loan</button>
-            <button class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200" onclick="showSalesTab(event, 'view-sales')" data-i18n="tabs.loans.view_loans">View Loans</button>
+            <button
+              class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
+              onclick="showSalesTab(event, 'add-sale')"
+              data-i18n="tabs.loans.add_loan"
+            >
+              Add Loan
+            </button>
+            <button
+              class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
+              onclick="showSalesTab(event, 'view-sales')"
+              data-i18n="tabs.loans.view_loans"
+            >
+              View Loans
+            </button>
           </div>
-          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.loans.add_loan_title">Add a Loan</h2>
+          <h2
+            class="text-xl font-bold mb-4"
+            data-i18n="tabs.loans.add_loan_title"
+          >
+            Add a Loan
+          </h2>
           <form id="loanForm" class="space-y-4">
             <div>
-              <label for="loanType" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.loans.form.type">Type</label>
-              <select id="loanType" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500">
-                <option value="" data-i18n="tabs.loans.form.select_type">Select Type</option>
-                <option data-i18n="tabs.loans.form.type_taken">Loan Taken</option>
-                <option data-i18n="tabs.loans.form.type_repaid">Loan Repaid</option>
+              <label
+                for="loanType"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.loans.form.type"
+                >Type</label
+              >
+              <select
+                id="loanType"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              >
+                <option value="" data-i18n="tabs.loans.form.select_type">
+                  Select Type
+                </option>
+                <option data-i18n="tabs.loans.form.type_taken">
+                  Loan Taken
+                </option>
+                <option data-i18n="tabs.loans.form.type_repaid">
+                  Loan Repaid
+                </option>
               </select>
             </div>
             <div>
-              <label for="person" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.loans.form.person">Person/Organization</label>
-              <input id="person" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500" />
+              <label
+                for="person"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.loans.form.person"
+                >Person/Organization</label
+              >
+              <input
+                id="person"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              />
             </div>
             <div>
-              <label for="loanAmount" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.loans.form.amount">Amount (₹)</label>
-              <input type="number" id="loanAmount" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500" />
+              <label
+                for="loanAmount"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.loans.form.amount"
+                >Amount (₹)</label
+              >
+              <input
+                type="number"
+                id="loanAmount"
+                step="0.01"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              />
             </div>
             <div>
-              <label for="status" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.loans.form.status">Status</label>
-              <select id="status" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500">
-                <option data-i18n="tabs.loans.form.status_pending">Pending</option>
-                <option data-i18n="tabs.loans.form.status_completed">Completed</option>
-                <option data-i18n="tabs.loans.form.status_overdue">Overdue</option>
+              <label
+                for="status"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.loans.form.status"
+                >Status</label
+              >
+              <select
+                id="status"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              >
+                <option data-i18n="tabs.loans.form.status_pending">
+                  Pending
+                </option>
+                <option data-i18n="tabs.loans.form.status_completed">
+                  Completed
+                </option>
+                <option data-i18n="tabs.loans.form.status_overdue">
+                  Overdue
+                </option>
               </select>
             </div>
             <div>
-              <label for="loanNotes" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.loans.form.notes">Notes (Optional)</label>
-              <textarea id="loanNotes" rows="3" class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"></textarea>
+              <label
+                for="loanNotes"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.loans.form.notes"
+                >Notes (Optional)</label
+              >
+              <textarea
+                id="loanNotes"
+                rows="3"
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              ></textarea>
             </div>
-            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg" data-i18n="tabs.loans.form.submit">Add Loan Entry</button>
+            <button
+              type="submit"
+              class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+              data-i18n="tabs.loans.form.submit"
+            >
+              Add Loan Entry
+            </button>
           </form>
-          <div id="loan-message" class="mt-3 text-center font-semibold hidden"></div>
+          <div
+            id="loan-message"
+            class="mt-3 text-center font-semibold hidden"
+          ></div>
         </div>
-  
+
         <!-- Dues -->
         <div id="due-form" class="form-section">
-          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.dues.title">Dues Management</h2>
-          
+          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.dues.title">
+            Dues Management
+          </h2>
+
           <!-- Dues Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
-            <button class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white" onclick="showSalesTab(event, 'add-sale')" data-i18n="tabs.dues.add_due">Add Due</button>
-            <button class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200" onclick="showSalesTab(event, 'view-sales')" data-i18n="tabs.dues.view_dues">View Dues</button>
+            <button
+              class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
+              onclick="showSalesTab(event, 'add-sale')"
+              data-i18n="tabs.dues.add_due"
+            >
+              Add Due
+            </button>
+            <button
+              class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
+              onclick="showSalesTab(event, 'view-sales')"
+              data-i18n="tabs.dues.view_dues"
+            >
+              View Dues
+            </button>
           </div>
-          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.dues.add_due_title">Add a Due</h2>
+          <h2
+            class="text-xl font-bold mb-4"
+            data-i18n="tabs.dues.add_due_title"
+          >
+            Add a Due
+          </h2>
           <form id="dueForm" class="space-y-4">
             <div>
-              <label for="customerName" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.dues.form.customer_name">Customer Name</label>
-              <input id="customerName" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500" />
+              <label
+                for="customerName"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.dues.form.customer_name"
+                >Customer Name</label
+              >
+              <input
+                id="customerName"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              />
             </div>
             <div>
-              <label for="dueAmount" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.dues.form.amount_due">Amount Due (₹)</label>
-              <input type="number" id="dueAmount" step="0.01" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500" />
+              <label
+                for="dueAmount"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.dues.form.amount_due"
+                >Amount Due (₹)</label
+              >
+              <input
+                type="number"
+                id="dueAmount"
+                step="0.01"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              />
             </div>
             <div>
-              <label for="dueStatus" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.dues.form.status">Status</label>
-              <select id="dueStatus" required class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500">
-                <option data-i18n="tabs.dues.form.status_pending">Pending</option>
+              <label
+                for="dueStatus"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.dues.form.status"
+                >Status</label
+              >
+              <select
+                id="dueStatus"
+                required
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              >
+                <option data-i18n="tabs.dues.form.status_pending">
+                  Pending
+                </option>
                 <option data-i18n="tabs.dues.form.status_paid">Paid</option>
-                <option data-i18n="tabs.dues.form.status_overdue">Overdue</option>
+                <option data-i18n="tabs.dues.form.status_overdue">
+                  Overdue
+                </option>
               </select>
             </div>
             <div>
-              <label for="dueNotes" class="block font-semibold text-gray-700 mb-1" data-i18n="tabs.dues.form.notes">Notes (Optional)</label>
-              <textarea id="dueNotes" rows="3" class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"></textarea>
+              <label
+                for="dueNotes"
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="tabs.dues.form.notes"
+                >Notes (Optional)</label
+              >
+              <textarea
+                id="dueNotes"
+                rows="3"
+                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+              ></textarea>
             </div>
-            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg" data-i18n="tabs.dues.form.submit">Add Due Entry</button>
+            <button
+              type="submit"
+              class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+              data-i18n="tabs.dues.form.submit"
+            >
+              Add Due Entry
+            </button>
           </form>
-          <div id="due-message" class="mt-3 text-center font-semibold hidden"></div>
+          <div
+            id="due-message"
+            class="mt-3 text-center font-semibold hidden"
+          ></div>
         </div>
-  
+
         <!-- Dashboard -->
         <div id="dashboard-form" class="form-section">
-          <h2 class="text-xl font-bold mb-4 text-center" data-i18n="tabs.dashboard.title">Business Dashboard</h2>
+          <h2
+            class="text-xl font-bold mb-4 text-center"
+            data-i18n="tabs.dashboard.title"
+          >
+            Business Dashboard
+          </h2>
           <div class="grid grid-cols-2 gap-4 mb-5">
             <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-blue-500">
-              <div id="totalSales" class="text-2xl font-bold text-gray-800">0</div>
-              <div class="text-gray-500 text-sm" data-i18n="tabs.dashboard.total_sales">Total Sales</div>
+              <div id="totalSales" class="text-2xl font-bold text-gray-800">
+                0
+              </div>
+              <div
+                class="text-gray-500 text-sm"
+                data-i18n="tabs.dashboard.total_sales"
+              >
+                Total Sales
+              </div>
             </div>
             <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-blue-500">
-              <div id="totalProfit" class="text-2xl font-bold text-gray-800">₹0</div>
-              <div class="text-gray-500 text-sm" data-i18n="tabs.dashboard.total_profit">Total Profit</div>
+              <div id="totalProfit" class="text-2xl font-bold text-gray-800">
+                ₹0
+              </div>
+              <div
+                class="text-gray-500 text-sm"
+                data-i18n="tabs.dashboard.total_profit"
+              >
+                Total Profit
+              </div>
             </div>
             <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-green-600">
-              <div id="savings" class="text-2xl font-bold text-gray-800">₹0</div>
-              <div class="text-gray-500 text-sm" data-i18n="tabs.dashboard.savings">Savings (40%)</div>
+              <div id="savings" class="text-2xl font-bold text-gray-800">
+                ₹0
+              </div>
+              <div
+                class="text-gray-500 text-sm"
+                data-i18n="tabs.dashboard.savings"
+              >
+                Savings (40%)
+              </div>
             </div>
             <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-red-500">
-              <div id="reinvestment" class="text-2xl font-bold text-gray-800">₹0</div>
-              <div class="text-gray-500 text-sm" data-i18n="tabs.dashboard.reinvestment">Reinvestment (60%)</div>
+              <div id="reinvestment" class="text-2xl font-bold text-gray-800">
+                ₹0
+              </div>
+              <div
+                class="text-gray-500 text-sm"
+                data-i18n="tabs.dashboard.reinvestment"
+              >
+                Reinvestment (60%)
+              </div>
             </div>
           </div>
-          <button class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg" onclick="loadDashboard()" data-i18n="tabs.dashboard.refresh">Refresh Data</button>
+          <button
+            class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+            onclick="loadDashboard()"
+            data-i18n="tabs.dashboard.refresh"
+          >
+            Refresh Data
+          </button>
         </div>
-  
       </div>
     </div>
-  <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbytLSBszyk3v78evYr0zIPgBUXo4dCkfLgRr1WYtLgKfOJvw8sFFpvaA-zcjEaXGeeI5w/exec';
-    
-    let paymentMethodsList = [];
-    let splitPaymentRows = [];
-    // Current date for sales view
-    let currentViewDate = new Date();
-    
-    // Format date as YYYY-MM-DD
-    function formatDate(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
-    
-    // Format date for display
-    function formatDateDisplay(date) {
-      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-      return date.toLocaleDateString('en-US', options);
-    }
-    
-    // Change date for sales view
-    function changeDate(days) {
-      currentViewDate.setDate(currentViewDate.getDate() + days);
-      updateDateDisplay();
-      loadDailySales();
-    }
-    
-    // Update the date display
-    function updateDateDisplay() {
-      document.getElementById('selected-date').textContent = formatDateDisplay(currentViewDate);
-    }
-    
-    // Show main tabs
-    function showTab(event, tabName) {
-      // Hide all forms
-      document.querySelectorAll('.form-section').forEach(section => {
-        section.classList.remove('active');
-      });
-      
-      // Remove active class from all tabs
-      document.querySelectorAll('.nav-tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      
-      // Show selected form and activate tab
-      document.getElementById(tabName + '-form').classList.add('active');
-      event.target.classList.add('active');
-      
-      // If dashboard is selected, load dashboard data
-      if (tabName === 'dashboard') {
-        loadDashboard();
+    <script>
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbytLSBszyk3v78evYr0zIPgBUXo4dCkfLgRr1WYtLgKfOJvw8sFFpvaA-zcjEaXGeeI5w/exec";
+
+      const spinnerDiv = document.getElementById("spinnerDiv");
+
+      let paymentMethodsList = [];
+      let splitPaymentRows = [];
+      // Current date for sales view
+      let currentViewDate = new Date();
+
+      // Format date as YYYY-MM-DD
+      function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
       }
-      
-      // If sales is selected, load today's sales
-      if (tabName === 'sale') {
-        // Reset to today's date
-        currentViewDate = new Date();
+
+      // Format date for display
+      function formatDateDisplay(date) {
+        const options = {
+          weekday: "short",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        };
+        return date.toLocaleDateString("en-US", options);
+      }
+
+      // Change date for sales view
+      function changeDate(days) {
+        currentViewDate.setDate(currentViewDate.getDate() + days);
         updateDateDisplay();
-        // Set default tab to add sale
-        showSalesTab(null, 'add-sale');
-      }
-    }
-    
-    // Show sales tabs
-    function showSalesTab(event, tabName) {
-      // Hide all sales content
-      document.querySelectorAll('.sales-content').forEach(section => {
-        section.classList.add('hidden');
-      });
-      
-      // Remove active class from all sales tabs
-      document.querySelectorAll('.sales-tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      
-      // Show selected sales content and activate tab
-      document.getElementById(tabName).classList.remove('hidden');
-      if (event) {
-        event.target.classList.add('active');
-      } else {
-        // Default to first tab if no event
-        document.querySelector('.sales-tab').classList.add('active');
-      }
-      
-      // If viewing sales, load the data
-      if (tabName === 'view-sales') {
         loadDailySales();
       }
-    }
-    
-    // Load daily sales for the selected date
-    async function loadDailySales() {
-      try {
-        const dateStr = formatDate(currentViewDate);
-        const response = await fetch(`${API_URL}?type=dailySales&date=${dateStr}`, {
-          redirect: "follow",
-          method: 'GET',
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
+
+      // Update the date display
+      function updateDateDisplay() {
+        document.getElementById("selected-date").textContent =
+          formatDateDisplay(currentViewDate);
+      }
+
+      // Show main tabs
+      function showTab(event, tabName) {
+        // Hide all forms
+        document.querySelectorAll(".form-section").forEach((section) => {
+          section.classList.remove("active");
         });
-        
-        const data = await response.json();
-        
-        // Update summary cards
-        document.getElementById('daily-total-sales').textContent = data.totalSales || 0;
-        document.getElementById('daily-total-revenue').textContent = '₹' + (data.totalRevenue || 0).toFixed(2);
-        document.getElementById('daily-total-profit').textContent = '₹' + (data.totalProfit || 0).toFixed(2);
-        
-        // Update sales table
-        const tableBody = document.getElementById('sales-table-body');
-        const noSalesMessage = document.getElementById('no-sales-message');
-        
-        if (data.sales && data.sales.length > 0) {
-          tableBody.innerHTML = '';
-          noSalesMessage.classList.add('hidden');
-          
-          data.sales.forEach(sale => {
-            const profit = sale.sellingPrice - sale.costPrice;
-            const row = document.createElement('tr');
-            row.className = 'hover:bg-gray-50';
-            row.innerHTML = `
+
+        // Remove active class from all tabs
+        document.querySelectorAll(".nav-tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Show selected form and activate tab
+        document.getElementById(tabName + "-form").classList.add("active");
+        event.target.classList.add("active");
+
+        // If dashboard is selected, load dashboard data
+        if (tabName === "dashboard") {
+          loadDashboard();
+        }
+
+        // If sales is selected, load today's sales
+        if (tabName === "sale") {
+          // Reset to today's date
+          currentViewDate = new Date();
+          updateDateDisplay();
+          // Set default tab to add sale
+          showSalesTab(null, "add-sale");
+        }
+      }
+
+      // Show sales tabs
+      function showSalesTab(event, tabName) {
+        // Hide all sales content
+        document.querySelectorAll(".sales-content").forEach((section) => {
+          section.classList.add("hidden");
+        });
+
+        // Remove active class from all sales tabs
+        document.querySelectorAll(".sales-tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Show selected sales content and activate tab
+        document.getElementById(tabName).classList.remove("hidden");
+        if (event) {
+          event.target.classList.add("active");
+        } else {
+          // Default to first tab if no event
+          document.querySelector(".sales-tab").classList.add("active");
+        }
+
+        // If viewing sales, load the data
+        if (tabName === "view-sales") {
+          loadDailySales();
+        }
+      }
+
+      // Load daily sales for the selected date
+      async function loadDailySales() {
+        try {
+          const spinnerInsert = document.getElementById("spinnerInsert");
+          const spinnerSvg = ` <svg
+        class="mr-3 -ml-1 size-6  animate-spin text-indigo-600"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>`;
+          spinnerInsert.innerHTML = spinnerSvg;
+          const dateStr = formatDate(currentViewDate);
+          const response = await fetch(
+            `${API_URL}?type=dailySales&date=${dateStr}`,
+            {
+              redirect: "follow",
+              method: "GET",
+              headers: {
+                "Content-Type": "text/plain;charset=utf-8",
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          // Update summary cards
+          document.getElementById("daily-total-sales").textContent =
+            data.totalSales || 0;
+          document.getElementById("daily-total-revenue").textContent =
+            "₹" + (data.totalRevenue || 0).toFixed(2);
+          document.getElementById("daily-total-profit").textContent =
+            "₹" + (data.totalProfit || 0).toFixed(2);
+
+          // Update sales table
+          const tableBody = document.getElementById("sales-table-body");
+          const noSalesMessage = document.getElementById("no-sales-message");
+
+          if (data.sales && data.sales.length > 0) {
+            tableBody.innerHTML = "";
+            noSalesMessage.classList.add("hidden");
+
+            data.sales.forEach((sale) => {
+              const profit = sale.sellingPrice - sale.costPrice;
+              const row = document.createElement("tr");
+              row.className = "hover:bg-gray-50";
+              row.innerHTML = `
               <td class="py-2 px-4 border-b">${sale.productName}</td>
-              <td class="py-2 px-4 border-b text-right">₹${sale.costPrice.toFixed(2)}</td>
-              <td class="py-2 px-4 border-b text-right">₹${sale.sellingPrice.toFixed(2)}</td>
-              <td class="py-2 px-4 border-b text-right">₹${profit.toFixed(2)}</td>
+              <td class="py-2 px-4 border-b text-right">₹${sale.costPrice.toFixed(
+                2
+              )}</td>
+              <td class="py-2 px-4 border-b text-right">₹${sale.sellingPrice.toFixed(
+                2
+              )}</td>
+              <td class="py-2 px-4 border-b text-right">₹${profit.toFixed(
+                2
+              )}</td>
             `;
-            tableBody.appendChild(row);
+              tableBody.appendChild(row);
+            });
+          } else {
+            tableBody.innerHTML = "";
+            noSalesMessage.classList.remove("hidden");
+          }
+        } catch (error) {
+          console.error("Error loading daily sales:", error);
+          // Set default values if sales fail to load
+          document.getElementById("daily-total-sales").textContent = "0";
+          document.getElementById("daily-total-revenue").textContent = "₹0";
+          document.getElementById("daily-total-profit").textContent = "₹0";
+          document.getElementById("sales-table-body").innerHTML = "";
+          document
+            .getElementById("no-sales-message")
+            .classList.remove("hidden");
+        } finally {
+          spinnerInsert.innerHTML = "";
+        }
+      }
+
+      // Sales Form Handler
+      document
+        .getElementById("saleForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const formData = {
+            productName: document.getElementById("productName").value,
+            costPrice: parseFloat(document.getElementById("costPrice").value),
+            sellingPrice: parseFloat(
+              document.getElementById("sellingPrice").value
+            ),
+            quantity: parseInt(document.getElementById("quantity").value) || 1,
+            date: document.getElementById("saleDate").value,
+            notes: document.getElementById("saleNotes").value,
+          };
+
+          // Handle payment method
+          if (document.getElementById("splitPaymentToggle").checked) {
+            // Split payment
+            const paymentBreakdown = {};
+            const methodSelects = document.querySelectorAll(
+              ".payment-method-select"
+            );
+            const amountInputs = document.querySelectorAll(".payment-amount");
+
+            for (let i = 0; i < methodSelects.length; i++) {
+              const method = methodSelects[i].value;
+              const amount = parseFloat(amountInputs[i].value);
+              if (method && amount > 0) {
+                paymentBreakdown[method] = amount;
+              }
+            }
+
+            formData.paymentMethod = paymentBreakdown;
+          } else {
+            // Single payment
+            const paymentMethod =
+              document.getElementById("paymentMethod").value;
+            if (paymentMethod) {
+              formData.paymentMethod = paymentMethod;
+            }
+          }
+
+          await submitForm("sale", formData, "sale-message");
+        });
+
+      // Expense Form Handler
+      document
+        .getElementById("expenseForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          await submitForm(
+            "expense",
+            {
+              description: document.getElementById("description").value,
+              category: document.getElementById("category").value,
+              amount: parseFloat(document.getElementById("amount").value),
+            },
+            "expense-message"
+          );
+        });
+
+      // Loan Form Handler
+      document
+        .getElementById("loanForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          await submitForm(
+            "loan",
+            {
+              type: document.getElementById("loanType").value,
+              person: document.getElementById("person").value,
+              amount: parseFloat(document.getElementById("loanAmount").value),
+              status: document.getElementById("status").value,
+              notes: document.getElementById("loanNotes").value,
+            },
+            "loan-message"
+          );
+        });
+
+      // Due Form Handler
+      document
+        .getElementById("dueForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          await submitForm(
+            "due",
+            {
+              customerName: document.getElementById("customerName").value,
+              amount: parseFloat(document.getElementById("dueAmount").value),
+              status: document.getElementById("dueStatus").value,
+              notes: document.getElementById("dueNotes").value,
+            },
+            "due-message"
+          );
+        });
+
+      async function submitForm(type, data, messageElementId) {
+        const messageElement = document.getElementById(messageElementId);
+        const button = document.querySelector(
+          `#${type}Form button[type=submit]`
+        );
+
+        const originalText = button.textContent;
+
+        console.log(button, `#${type}Form button[type=submit]`, originalText);
+
+        const spinnerSvg = ` <svg
+        class="mr-3 -ml-1 size-6  animate-spin text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>`;
+        try {
+          button.disabled = true;
+
+          button.innerHTML = spinnerSvg + originalText;
+
+          const response = await fetch(API_URL, {
+            redirect: "follow",
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+            body: JSON.stringify({
+              type: type,
+              ...data,
+            }),
           });
-        } else {
-          tableBody.innerHTML = '';
-          noSalesMessage.classList.remove('hidden');
-        }
-        
-      } catch (error) {
-        console.error('Error loading daily sales:', error);
-        // Set default values if sales fail to load
-        document.getElementById('daily-total-sales').textContent = '0';
-        document.getElementById('daily-total-revenue').textContent = '₹0';
-        document.getElementById('daily-total-profit').textContent = '₹0';
-        document.getElementById('sales-table-body').innerHTML = '';
-        document.getElementById('no-sales-message').classList.remove('hidden');
-      }
-    }
 
-    // Sales Form Handler
-    document.getElementById('saleForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = {
-        productName: document.getElementById('productName').value,
-        costPrice: parseFloat(document.getElementById('costPrice').value),
-        sellingPrice: parseFloat(document.getElementById('sellingPrice').value),
-        quantity: parseInt(document.getElementById('quantity').value) || 1,
-        date: document.getElementById('saleDate').value,
-        notes: document.getElementById('saleNotes').value
-      };
-      
-      // Handle payment method
-      if (document.getElementById('splitPaymentToggle').checked) {
-        // Split payment
-        const paymentBreakdown = {};
-        const methodSelects = document.querySelectorAll('.payment-method-select');
-        const amountInputs = document.querySelectorAll('.payment-amount');
-        
-        for (let i = 0; i < methodSelects.length; i++) {
-          const method = methodSelects[i].value;
-          const amount = parseFloat(amountInputs[i].value);
-          if (method && amount > 0) {
-            paymentBreakdown[method] = amount;
+          const result = await response.json();
+
+          if (result.status === "success") {
+            messageElement.textContent = result.message;
+            messageElement.className =
+              "mt-3 text-center font-semibold message success";
+            messageElement.classList.remove("hidden");
+            const form = document.getElementById(`${type}Form`);
+            form.reset();
+
+            // If we're in the sales view, refresh the data
+            if (
+              type === "sale" &&
+              document
+                .getElementById("view-sales")
+                .classList.contains("hidden") === false
+            ) {
+              loadDailySales();
+            }
+          } else {
+            throw new Error(result.message);
           }
-        }
-        
-        formData.paymentMethod = paymentBreakdown;
-      } else {
-        // Single payment
-        const paymentMethod = document.getElementById('paymentMethod').value;
-        if (paymentMethod) {
-          formData.paymentMethod = paymentMethod;
+        } catch (error) {
+          messageElement.textContent = "Error: " + error.message;
+          messageElement.className =
+            "mt-3 text-center font-semibold message error";
+          messageElement.classList.remove("hidden");
+        } finally {
+          button.disabled = false;
+          button.textContent = getButtonText(type);
+
+          // Clear message after 3 seconds
+          setTimeout(() => {
+            messageElement.textContent = "";
+            messageElement.className = "mt-3 text-center font-semibold hidden";
+          }, 3000);
         }
       }
-      
-      await submitForm('sale', formData, 'sale-message');
-    });
 
-    // Expense Form Handler
-    document.getElementById('expenseForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await submitForm('expense', {
-        description: document.getElementById('description').value,
-        category: document.getElementById('category').value,
-        amount: parseFloat(document.getElementById('amount').value)
-      }, 'expense-message');
-    });
+      function getButtonText(type) {
+        const buttonTexts = {
+          sale: "Add Sale",
+          expense: "Add Expense",
+          loan: "Add Loan Entry",
+          due: "Add Due Entry",
+        };
+        return buttonTexts[type];
+      }
 
-    // Loan Form Handler
-    document.getElementById('loanForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await submitForm('loan', {
-        type: document.getElementById('loanType').value,
-        person: document.getElementById('person').value,
-        amount: parseFloat(document.getElementById('loanAmount').value),
-        status: document.getElementById('status').value,
-        notes: document.getElementById('loanNotes').value
-      }, 'loan-message');
-    });
+      async function loadDashboard() {
+        try {
+          const response = await fetch(API_URL + "?type=dashboard", {
+            redirect: "follow",
+            method: "GET",
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+          });
+          const data = await response.json();
 
-    // Due Form Handler
-    document.getElementById('dueForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await submitForm('due', {
-        customerName: document.getElementById('customerName').value,
-        amount: parseFloat(document.getElementById('dueAmount').value),
-        status: document.getElementById('dueStatus').value,
-        notes: document.getElementById('dueNotes').value
-      }, 'due-message');
-    });
+          document.getElementById("totalSales").textContent =
+            data.totalSales || 0;
+          document.getElementById("totalProfit").textContent =
+            "₹" + (data.totalProfit || 0).toFixed(2);
+          document.getElementById("savings").textContent =
+            "₹" + (data.savings || 0).toFixed(2);
+          document.getElementById("reinvestment").textContent =
+            "₹" + (data.reinvestment || 0).toFixed(2);
+        } catch (error) {
+          console.error("Error loading dashboard:", error);
+          // Set default values if dashboard fails to load
+          document.getElementById("totalSales").textContent = "0";
+          document.getElementById("totalProfit").textContent = "₹0";
+          document.getElementById("savings").textContent = "₹0";
+          document.getElementById("reinvestment").textContent = "₹0";
+        }
+      }
 
-    async function submitForm(type, data, messageElementId) {
-      const messageElement = document.getElementById(messageElementId);
-      const button = document.querySelector(`#${type}Form button[type=submit]`);
-      
-      const originalText = button.textContent;
-      
-      console.log(button, `#${type}Form button[type=submit]`, originalText)
-      
-      const spinnerSvg = `<div role="status">
-    <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-    </svg>
-    <span class="sr-only">Loading...</span>
-</div>`;
-      try {
-        button.disabled = true;
-        
-        button.innerHTML = spinnerSvg + originalText;
-        
-        const response = await fetch(API_URL, {
-          redirect: "follow",
-          method: 'POST',
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
-          body: JSON.stringify({
-            type: type,
-            ...data
-          })
-        });
-        
-        const result = await response.json();
-        
-        if (result.status === 'success') {
-          messageElement.textContent = result.message;
-          messageElement.className = 'mt-3 text-center font-semibold message success';
-          messageElement.classList.remove('hidden');
-          const form = document.getElementById(`${type}Form`)
-          form.reset();
-          
-          // If we're in the sales view, refresh the data
-          if (type === 'sale' && document.getElementById('view-sales').classList.contains('hidden') === false) {
-            loadDailySales();
+      // Initialize the page
+      document.addEventListener("DOMContentLoaded", () => {
+        // Set default date for sale form to today
+        document.getElementById("saleDate").value = formatDate(new Date());
+
+        // Set up initial active tabs
+        document.querySelector(".nav-tab").classList.add("active");
+        document.getElementById("sale-form").classList.add("active");
+        updateDateDisplay();
+
+        // Load initial data
+        loadDashboard();
+      });
+    </script>
+    <script>
+      const localeSelect = document.getElementById("locale-select");
+
+      async function fetchTranslations(locale) {
+        try {
+          spinnerDiv.style.display = "flex";
+          spinnerDiv.style.alignItems = "center";
+          spinnerDiv.style.justifyContent = "center";
+
+          const res = await fetch(
+            `${API_URL}?type=translations&locale=${locale}`,
+            {
+              redirect: "follow",
+              method: "GET",
+              headers: {
+                "Content-Type": "text/plain;charset=utf-8",
+              },
+            }
+          );
+          const data = await res.json();
+
+          if (data.status === "success") {
+            console.log("Translations loaded:", data.translations);
+
+            // Example: update some UI elements (if needed)
+            // document.querySelector("#header-title").textContent = data.translations['sales_title'] || "Sales Management";
+            applyTranslations(data.translations);
+            return data.translations;
+          } else {
+            console.error("Translation fetch error:", data.message);
           }
-        } else {
-          throw new Error(result.message);
+        } catch (err) {
+          console.error("Network error fetching translations:", err);
+        } finally {
+          spinnerDiv.style.display = "none";
         }
-        
-      } catch (error) {
-        messageElement.textContent = 'Error: ' + error.message;
-        messageElement.className = 'mt-3 text-center font-semibold message error';
-        messageElement.classList.remove('hidden');
-      } finally {
-        button.disabled = false;
-        button.textContent = getButtonText(type);
-        
-        // Clear message after 3 seconds
-        setTimeout(() => {
-          messageElement.textContent = '';
-          messageElement.className = 'mt-3 text-center font-semibold hidden';
-        }, 3000);
       }
-    }
 
-    function getButtonText(type) {
-      const buttonTexts = {
-        'sale': 'Add Sale',
-        'expense': 'Add Expense',
-        'loan': 'Add Loan Entry',
-        'due': 'Add Due Entry'
-      };
-      return buttonTexts[type];
-    }
-
-    async function loadDashboard() {
-      try {
-        const response = await fetch(API_URL + '?type=dashboard', {
-          redirect: "follow",
-          method: 'GET',
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
+      function applyTranslations(translations) {
+        // Update your UI elements with translations
+        // You'll need to add data-i18n attributes to your HTML
+        Object.keys(translations).forEach((key) => {
+          const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+          elements.forEach((element) => {
+            element.textContent = translations[key];
+          });
         });
-        const data = await response.json();
-        
-        document.getElementById('totalSales').textContent = data.totalSales || 0;
-        document.getElementById('totalProfit').textContent = '₹' + (data.totalProfit || 0).toFixed(2);
-        document.getElementById('savings').textContent = '₹' + (data.savings || 0).toFixed(2);
-        document.getElementById('reinvestment').textContent = '₹' + (data.reinvestment || 0).toFixed(2);
-      } catch (error) {
-        console.error('Error loading dashboard:', error);
-        // Set default values if dashboard fails to load
-        document.getElementById('totalSales').textContent = '0';
-        document.getElementById('totalProfit').textContent = '₹0';
-        document.getElementById('savings').textContent = '₹0';
-        document.getElementById('reinvestment').textContent = '₹0';
       }
-    }
+      // Default: load English on page load
+      fetchTranslations("en");
 
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', () => {
-      // Set default date for sale form to today
-      document.getElementById('saleDate').value = formatDate(new Date());
-      
-      // Set up initial active tabs
-      document.querySelector('.nav-tab').classList.add('active');
-      document.getElementById('sale-form').classList.add('active');
-      updateDateDisplay();
-      
-      // Load initial data
-      loadDashboard();
-    });
-  </script><script>
-  const localeSelect = document.getElementById("locale-select");
+      // When locale changes
+      localeSelect.addEventListener("change", (e) => {
+        const locale = e.target.value;
+        fetchTranslations(locale);
+      });
 
-  async function fetchTranslations(locale) {
-    try {
-      const res = await fetch(
-        `${API_URL}?type=translations&locale=${locale}`, {
-          redirect: "follow",
-          method: 'GET',
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
+      async function fetchPaymentMethods() {
+        try {
+          const response = await fetch(`${API_URL}?type=paymentMethods`, {
+            redirect: "follow",
+            method: "GET",
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+          });
+          const data = await response.json();
+
+          if (data.status === "success") {
+            paymentMethodsList = data.paymentMethods;
+            populatePaymentMethods();
+          }
+        } catch (error) {
+          console.error("Error fetching payment methods:", error);
+          // Fallback to default payment methods
+          paymentMethodsList = [
+            "handcash",
+            "esewa_binod_kharel",
+            "fonepay_subham_fancy_store",
+          ];
+          populatePaymentMethods();
         }
-      );
-      const data = await res.json();
-
-      if (data.status === "success") {
-        console.log("Translations loaded:", data.translations);
-    
-        // Example: update some UI elements (if needed)
-        // document.querySelector("#header-title").textContent = data.translations['sales_title'] || "Sales Management";
-        applyTranslations(data.translations);
-        return data.translations;
-      } else {
-        console.error("Translation fetch error:", data.message);
       }
-    } catch (err) {
-      console.error("Network error fetching translations:", err);
-    }
-  }
 
-  function applyTranslations(translations) {
-    // Update your UI elements with translations
-    // You'll need to add data-i18n attributes to your HTML
-    Object.keys(translations).forEach(key => {
-      const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
-      elements.forEach(element => {
-        element.textContent = translations[key];
-      });
-    });
-  }
-  // Default: load English on page load
-  fetchTranslations("en");
+      // Populate payment method dropdown
+      function populatePaymentMethods() {
+        const paymentMethodSelect = document.getElementById("paymentMethod");
+        paymentMethodSelect.innerHTML =
+          '<option value="" data-i18n="tabs.sales.form.select_payment_method">Select Payment Method</option>';
 
-  // When locale changes
-  localeSelect.addEventListener("change", (e) => {
-    const locale = e.target.value;
-    fetchTranslations(locale);
-  });
-  
-  async function fetchPaymentMethods() {
-    try {
-      const response = await fetch(`${API_URL}?type=paymentMethods`, {
-        redirect: "follow",
-        method: 'GET',
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
-        },
-      });
-      const data = await response.json();
-      
-      if (data.status === 'success') {
-        paymentMethodsList = data.paymentMethods;
-        populatePaymentMethods();
+        paymentMethodsList.forEach((method) => {
+          const option = document.createElement("option");
+          option.value = method;
+          option.textContent = getPaymentMethodDisplayName(method);
+          paymentMethodSelect.appendChild(option);
+        });
       }
-    } catch (error) {
-      console.error('Error fetching payment methods:', error);
-      // Fallback to default payment methods
-      paymentMethodsList = ['handcash', 'esewa_binod_kharel', 'fonepay_subham_fancy_store'];
-      populatePaymentMethods();
-    }
-  }
-  
-  // Populate payment method dropdown
-  function populatePaymentMethods() {
-    const paymentMethodSelect = document.getElementById('paymentMethod');
-    paymentMethodSelect.innerHTML = '<option value="" data-i18n="tabs.sales.form.select_payment_method">Select Payment Method</option>';
-    
-    paymentMethodsList.forEach(method => {
-      const option = document.createElement('option');
-      option.value = method;
-      option.textContent = getPaymentMethodDisplayName(method);
-      paymentMethodSelect.appendChild(option);
-    });
-  }
-  
-  // Get display name for payment method
-  function getPaymentMethodDisplayName(method) {
-    const displayNames = {
-      'handcash': 'Hand Cash',
-      'esewa_binod_kharel': 'eSewa (Binod Kharel)',
-      'fonepay_subham_fancy_store': 'Fonepay (Subham Fancy Store)'
-    };
-    return displayNames[method] || method;
-  }
-  
-  // Add split payment functionality
-  function initializeSplitPayment() {
-    const toggle = document.getElementById('splitPaymentToggle');
-    const singleSection = document.getElementById('single-payment-section');
-    const splitSection = document.getElementById('split-payment-section');
-    
-    toggle.addEventListener('change', function() {
-      if (this.checked) {
-        singleSection.classList.add('hidden');
-        splitSection.classList.remove('hidden');
-        addSplitPaymentRow(); // Add first row
-      } else {
-        singleSection.classList.remove('hidden');
-        splitSection.classList.add('hidden');
-        clearSplitPaymentRows();
+
+      // Get display name for payment method
+      function getPaymentMethodDisplayName(method) {
+        const displayNames = {
+          handcash: "Hand Cash",
+          esewa_binod_kharel: "eSewa (Binod Kharel)",
+          fonepay_subham_fancy_store: "Fonepay (Subham Fancy Store)",
+        };
+        return displayNames[method] || method;
       }
-      updateSplitPaymentTotal();
-    });
-    
-    // Add payment method button
-    document.getElementById('add-payment-method').addEventListener('click', addSplitPaymentRow);
-    
-    // Real-time calculation updates
-    document.getElementById('costPrice').addEventListener('input', updateCalculations);
-    document.getElementById('sellingPrice').addEventListener('input', updateCalculations);
-    document.getElementById('quantity').addEventListener('input', updateCalculations);
-  }
-  
-  // Add a new split payment row
-  function addSplitPaymentRow() {
-    const container = document.getElementById('split-payment-methods');
-    const rowId = Date.now();
-    
-    const row = document.createElement('div');
-    row.className = 'flex gap-2 items-start';
-    row.innerHTML = `
+
+      // Add split payment functionality
+      function initializeSplitPayment() {
+        const toggle = document.getElementById("splitPaymentToggle");
+        const singleSection = document.getElementById("single-payment-section");
+        const splitSection = document.getElementById("split-payment-section");
+
+        toggle.addEventListener("change", function () {
+          if (this.checked) {
+            singleSection.classList.add("hidden");
+            splitSection.classList.remove("hidden");
+            addSplitPaymentRow(); // Add first row
+          } else {
+            singleSection.classList.remove("hidden");
+            splitSection.classList.add("hidden");
+            clearSplitPaymentRows();
+          }
+          updateSplitPaymentTotal();
+        });
+
+        // Add payment method button
+        document
+          .getElementById("add-payment-method")
+          .addEventListener("click", addSplitPaymentRow);
+
+        // Real-time calculation updates
+        document
+          .getElementById("costPrice")
+          .addEventListener("input", updateCalculations);
+        document
+          .getElementById("sellingPrice")
+          .addEventListener("input", updateCalculations);
+        document
+          .getElementById("quantity")
+          .addEventListener("input", updateCalculations);
+      }
+
+      // Add a new split payment row
+      function addSplitPaymentRow() {
+        const container = document.getElementById("split-payment-methods");
+        const rowId = Date.now();
+
+        const row = document.createElement("div");
+        row.className = "flex gap-2 items-start";
+        row.innerHTML = `
       <select class="flex-1 border border-gray-300 rounded max-w-md md:max-w-xl lg:max-w-2xl p-2 text-sm payment-method-select" required>
         <option value="">Select Method</option>
-        ${paymentMethodsList.map(method => 
-          `<option value="${method}">${getPaymentMethodDisplayName(method)}</option>`
-        ).join('')}
+        ${paymentMethodsList
+          .map(
+            (method) =>
+              `<option value="${method}">${getPaymentMethodDisplayName(
+                method
+              )}</option>`
+          )
+          .join("")}
       </select>
       <input type="number" step="0.01" min="0" placeholder="Amount" 
              class="max-w-24 md:max-w-32 border border-gray-300 rounded p-2 text-sm payment-amount" required>
@@ -853,99 +1559,113 @@
         </svg>
       </button>
     `;
-    
-    container.appendChild(row);
-    
-    // Add event listeners for the new row
-    const amountInput = row.querySelector('.payment-amount');
-    const methodSelect = row.querySelector('.payment-method-select');
-    
-    amountInput.addEventListener('input', updateSplitPaymentTotal);
-    methodSelect.addEventListener('change', updateSplitPaymentTotal);
-    
-    // Remove row button
-    row.querySelector('.remove-payment-row').addEventListener('click', function() {
-      if (container.children.length > 1) {
-        row.remove();
-        updateSplitPaymentTotal();
-      }
-    });
-    
-    splitPaymentRows.push(rowId);
-  }
-  
-  // Clear all split payment rows
-  function clearSplitPaymentRows() {
-    const container = document.getElementById('split-payment-methods');
-    container.innerHTML = '';
-    splitPaymentRows = [];
-  }
-  
-  // Update split payment total
-  function updateSplitPaymentTotal() {
-    const amountInputs = document.querySelectorAll('.payment-amount');
-    let total = 0;
-    
-    amountInputs.forEach(input => {
-      total += parseFloat(input.value) || 0;
-    });
-    
-    const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
-    const quantity = parseInt(document.getElementById('quantity').value) || 1;
-    const totalSelling = sellingPrice * quantity;
-    
-    document.getElementById('split-payment-total').textContent = `₹${total.toFixed(2)}`;
-    
-    const errorElement = document.getElementById('split-payment-error');
-    if (Math.abs(total - totalSelling) > 0.01 && total > 0) {
-      errorElement.classList.remove('hidden');
-    } else {
-      errorElement.classList.add('hidden');
-    }
-  }
-  
-  // Update calculation summary
-  function updateCalculations() {
-    const costPrice = parseFloat(document.getElementById('costPrice').value) || 0;
-    const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
-    const quantity = parseInt(document.getElementById('quantity').value) || 1;
-    
-    const totalCost = costPrice * quantity;
-    const totalSelling = sellingPrice * quantity;
-    const totalProfit = totalSelling - totalCost;
-    
-    document.getElementById('total-cost-display').textContent = `₹${totalCost.toFixed(2)}`;
-    document.getElementById('total-selling-display').textContent = `₹${totalSelling.toFixed(2)}`;
-    document.getElementById('total-profit-display').textContent = `₹${totalProfit.toFixed(2)}`;
-    
-    // Also update split payment validation
-    if (document.getElementById('splitPaymentToggle').checked) {
-      updateSplitPaymentTotal();
-    }
-  }
-  
-  // Initialize when DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
-    // ... existing initialization code ...
-    
-    // Set default date for sale form to today
-    document.getElementById('saleDate').value = formatDate(new Date());
-    
-    // Fetch payment methods
-    fetchPaymentMethods();
-    
-    // Initialize split payment functionality
-    initializeSplitPayment();
-    
-    // Set up initial active tabs
-    document.querySelector('.nav-tab').classList.add('active');
-    document.getElementById('sale-form').classList.add('active');
-    updateDateDisplay();
-    
-    // Load initial data
-    loadDashboard();
-  });
-</script>
 
-</body>
+        container.appendChild(row);
+
+        // Add event listeners for the new row
+        const amountInput = row.querySelector(".payment-amount");
+        const methodSelect = row.querySelector(".payment-method-select");
+
+        amountInput.addEventListener("input", updateSplitPaymentTotal);
+        methodSelect.addEventListener("change", updateSplitPaymentTotal);
+
+        // Remove row button
+        row
+          .querySelector(".remove-payment-row")
+          .addEventListener("click", function () {
+            if (container.children.length > 1) {
+              row.remove();
+              updateSplitPaymentTotal();
+            }
+          });
+
+        splitPaymentRows.push(rowId);
+      }
+
+      // Clear all split payment rows
+      function clearSplitPaymentRows() {
+        const container = document.getElementById("split-payment-methods");
+        container.innerHTML = "";
+        splitPaymentRows = [];
+      }
+
+      // Update split payment total
+      function updateSplitPaymentTotal() {
+        const amountInputs = document.querySelectorAll(".payment-amount");
+        let total = 0;
+
+        amountInputs.forEach((input) => {
+          total += parseFloat(input.value) || 0;
+        });
+
+        const sellingPrice =
+          parseFloat(document.getElementById("sellingPrice").value) || 0;
+        const quantity =
+          parseInt(document.getElementById("quantity").value) || 1;
+        const totalSelling = sellingPrice * quantity;
+
+        document.getElementById(
+          "split-payment-total"
+        ).textContent = `₹${total.toFixed(2)}`;
+
+        const errorElement = document.getElementById("split-payment-error");
+        if (Math.abs(total - totalSelling) > 0.01 && total > 0) {
+          errorElement.classList.remove("hidden");
+        } else {
+          errorElement.classList.add("hidden");
+        }
+      }
+
+      // Update calculation summary
+      function updateCalculations() {
+        const costPrice =
+          parseFloat(document.getElementById("costPrice").value) || 0;
+        const sellingPrice =
+          parseFloat(document.getElementById("sellingPrice").value) || 0;
+        const quantity =
+          parseInt(document.getElementById("quantity").value) || 1;
+
+        const totalCost = costPrice * quantity;
+        const totalSelling = sellingPrice * quantity;
+        const totalProfit = totalSelling - totalCost;
+
+        document.getElementById(
+          "total-cost-display"
+        ).textContent = `₹${totalCost.toFixed(2)}`;
+        document.getElementById(
+          "total-selling-display"
+        ).textContent = `₹${totalSelling.toFixed(2)}`;
+        document.getElementById(
+          "total-profit-display"
+        ).textContent = `₹${totalProfit.toFixed(2)}`;
+
+        // Also update split payment validation
+        if (document.getElementById("splitPaymentToggle").checked) {
+          updateSplitPaymentTotal();
+        }
+      }
+
+      // Initialize when DOM is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        // ... existing initialization code ...
+
+        // Set default date for sale form to today
+        document.getElementById("saleDate").value = formatDate(new Date());
+
+        // Fetch payment methods
+        fetchPaymentMethods();
+
+        // Initialize split payment functionality
+        initializeSplitPayment();
+
+        // Set up initial active tabs
+        document.querySelector(".nav-tab").classList.add("active");
+        document.getElementById("sale-form").classList.add("active");
+        updateDateDisplay();
+
+        // Load initial data
+        loadDashboard();
+      });
+    </script>
+  </body>
 </html>
