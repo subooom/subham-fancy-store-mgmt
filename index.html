@@ -22,6 +22,29 @@
         background-color: #4f46e5; /* indigo-600 */
         color: white;
       }
+      .expenses-content,
+      .loans-content,
+      .dues-content {
+        display: none;
+      }
+      .expenses-content.active,
+      .loans-content.active,
+      .dues-content.active {
+        display: block;
+      }
+      .period-btn.active,
+      .expenses-period-btn.active,
+      .loans-period-btn.active,
+      .dues-period-btn.active {
+        background-color: #3b82f6; /* blue-500 */
+        color: white;
+      }
+      .period-btn.active:hover,
+      .expenses-period-btn.active:hover,
+      .loans-period-btn.active:hover,
+      .dues-period-btn.active:hover {
+        background-color: #2563eb; /* blue-600 */
+      }
       .message.success {
         color: #059669; /* green-600 */
       }
@@ -424,9 +447,9 @@
 
                 <h3
                   class="text-lg font-semibold"
-                  data-i18n="tabs.sales.daily_sales"
+                  data-i18n="tabs.sales.sales_view"
                 >
-                  Daily Sales
+                  Sales View
                 </h3>
               </div>
               <div class="flex items-center space-x-2">
@@ -447,6 +470,47 @@
                   data-i18n="tabs.sales.next"
                 >
                   Next →
+                </button>
+              </div>
+            </div>
+
+            <!-- Period Filter Buttons -->
+            <div class="flex mb-4">
+              <div
+                class="inline-flex rounded-lg overflow-hidden border border-gray-300"
+                role="group"
+              >
+                <button
+                  type="button"
+                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600 active"
+                  data-period="daily"
+                  onclick="setPeriod('daily')"
+                >
+                  Daily
+                </button>
+                <button
+                  type="button"
+                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  data-period="weekly"
+                  onclick="setPeriod('weekly')"
+                >
+                  Weekly
+                </button>
+                <button
+                  type="button"
+                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  data-period="monthly"
+                  onclick="setPeriod('monthly')"
+                >
+                  Monthly
+                </button>
+                <button
+                  type="button"
+                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  data-period="annually"
+                  onclick="setPeriod('annually')"
+                >
+                  Annually
                 </button>
               </div>
             </div>
@@ -560,102 +624,278 @@
           <!-- Expenses Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
             <button
-              class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
-              onclick="showSalesTab(event, 'add-sale')"
+              class="expenses-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
+              onclick="showExpensesTab(event, 'add-expense')"
               data-i18n="tabs.expenses.add_expense"
             >
               Add Expense
             </button>
             <button
-              class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
-              onclick="showSalesTab(event, 'view-sales')"
+              class="expenses-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
+              onclick="showExpensesTab(event, 'view-expenses')"
               data-i18n="tabs.expenses.view_expense"
             >
-              View Expense
+              View Expenses
             </button>
           </div>
-          <h2
-            class="text-xl font-bold mb-4"
-            data-i18n="tabs.expenses.add_expense_title"
-          >
-            Add an Expense
-          </h2>
-          <form id="expenseForm" class="space-y-4">
-            <div>
-              <label
-                for="description"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.expenses.form.description"
-                >Description</label
-              >
-              <input
-                id="description"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                for="category"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.expenses.form.category"
-                >Category</label
-              >
-              <select
-                id="category"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              >
-                <option value="" data-i18n="tabs.expenses.form.select_category">
-                  Select Category
-                </option>
-                <option data-i18n="tabs.expenses.form.category_rent">
-                  Rent
-                </option>
-                <option data-i18n="tabs.expenses.form.category_utilities">
-                  Utilities
-                </option>
-                <option data-i18n="tabs.expenses.form.category_supplies">
-                  Supplies
-                </option>
-                <option data-i18n="tabs.expenses.form.category_staff">
-                  Staff
-                </option>
-                <option data-i18n="tabs.expenses.form.category_maintenance">
-                  Maintenance
-                </option>
-                <option data-i18n="tabs.expenses.form.category_other">
-                  Other
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="amount"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.expenses.form.amount"
-                >Amount (₹)</label
-              >
-              <input
-                type="number"
-                id="amount"
-                step="0.01"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              />
-            </div>
-            <button
-              type="submit"
-              class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
-              data-i18n="tabs.expenses.form.submit"
+
+          <!-- Add Expense Form -->
+          <div id="add-expense" class="expenses-content active">
+            <h3
+              class="text-lg font-semibold mb-3"
+              data-i18n="tabs.expenses.add_new_expense"
             >
-              Add Expense
-            </button>
-          </form>
-          <div
-            id="expense-message"
-            class="mt-3 text-center font-semibold hidden"
-          ></div>
+              Add New Expense
+            </h3>
+            <form id="expenseForm" class="space-y-4">
+              <div>
+                <label
+                  for="description"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.expenses.form.description"
+                  >Description</label
+                >
+                <input
+                  id="description"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label
+                  for="category"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.expenses.form.category"
+                  >Category</label
+                >
+                <select
+                  id="category"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                >
+                  <option
+                    value=""
+                    data-i18n="tabs.expenses.form.select_category"
+                  >
+                    Select Category
+                  </option>
+                  <option data-i18n="tabs.expenses.form.category_rent">
+                    Rent
+                  </option>
+                  <option data-i18n="tabs.expenses.form.category_utilities">
+                    Utilities
+                  </option>
+                  <option data-i18n="tabs.expenses.form.category_supplies">
+                    Supplies
+                  </option>
+                  <option data-i18n="tabs.expenses.form.category_staff">
+                    Staff
+                  </option>
+                  <option data-i18n="tabs.expenses.form.category_maintenance">
+                    Maintenance
+                  </option>
+                  <option data-i18n="tabs.expenses.form.category_other">
+                    Other
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label
+                  for="amount"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.expenses.form.amount"
+                  >Amount (₹)</label
+                >
+                <input
+                  type="number"
+                  id="amount"
+                  step="0.01"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                />
+              </div>
+              <button
+                type="submit"
+                class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+                data-i18n="tabs.expenses.form.submit"
+              >
+                Add Expense
+              </button>
+            </form>
+            <div
+              id="expense-message"
+              class="mt-3 text-center font-semibold hidden"
+            ></div>
+          </div>
+
+          <!-- View Expenses -->
+          <div id="view-expenses" class="expenses-content hidden">
+            <div class="flex flex-wrap justify-between items-center mb-4">
+              <div class="flex gap-2 items-center">
+                <div id="expenses-spinner-insert"></div>
+
+                <h3
+                  class="text-lg font-semibold"
+                  data-i18n="tabs.expenses.expenses_view"
+                >
+                  Expenses View
+                </h3>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  class="date-nav-btn"
+                  onclick="changeExpensesDate(-1)"
+                  data-i18n="tabs.sales.previous"
+                >
+                  ← Previous
+                </button>
+                <span
+                  id="expenses-selected-date"
+                  class="font-medium px-3 py-1 bg-blue-100 rounded-lg"
+                ></span>
+                <button
+                  class="date-nav-btn"
+                  onclick="changeExpensesDate(1)"
+                  data-i18n="tabs.sales.next"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+
+            <!-- Period Filter Buttons -->
+            <div class="flex mb-4">
+              <div
+                class="inline-flex rounded-lg overflow-hidden border border-gray-300"
+                role="group"
+              >
+                <button
+                  type="button"
+                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600 active"
+                  data-expenses-period="daily"
+                  onclick="setExpensesPeriod('daily')"
+                >
+                  Daily
+                </button>
+                <button
+                  type="button"
+                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  data-expenses-period="weekly"
+                  onclick="setExpensesPeriod('weekly')"
+                >
+                  Weekly
+                </button>
+                <button
+                  type="button"
+                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  data-expenses-period="monthly"
+                  onclick="setExpensesPeriod('monthly')"
+                >
+                  Monthly
+                </button>
+                <button
+                  type="button"
+                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  data-expenses-period="annually"
+                  onclick="setExpensesPeriod('annually')"
+                >
+                  Annually
+                </button>
+              </div>
+            </div>
+
+            <!-- Daily Summary -->
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-6"
+            >
+              <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                <div
+                  id="daily-total-expenses"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.expenses.total_expenses"
+                >
+                  Total Expenses
+                </div>
+              </div>
+              <div
+                class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500"
+              >
+                <div
+                  id="daily-total-amount"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  ₹0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.expenses.total_amount"
+                >
+                  Total Amount
+                </div>
+              </div>
+              <div
+                class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500"
+              >
+                <div
+                  id="daily-categories-count"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.expenses.categories"
+                >
+                  Categories
+                </div>
+              </div>
+            </div>
+
+            <!-- Expenses Table -->
+            <div class="overflow-x-auto">
+              <table
+                class="min-w-full bg-white border border-gray-200 rounded-lg"
+              >
+                <thead>
+                  <tr class="bg-gray-100">
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.expenses.table.description"
+                    >
+                      Description
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.expenses.table.category"
+                    >
+                      Category
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-right"
+                      data-i18n="tabs.expenses.table.amount"
+                    >
+                      Amount
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="expenses-table-body">
+                  <!-- Expenses data will be populated here -->
+                </tbody>
+              </table>
+              <div
+                id="no-expenses-message"
+                class="text-center py-4 text-gray-500 hidden"
+                data-i18n="tabs.expenses.no_expenses"
+              >
+                No expenses recorded for this day.
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Loans -->
@@ -667,126 +907,262 @@
           <!-- Loans Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
             <button
-              class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
-              onclick="showSalesTab(event, 'add-sale')"
+              class="loans-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
+              onclick="showLoansTab(event, 'add-loan')"
               data-i18n="tabs.loans.add_loan"
             >
               Add Loan
             </button>
             <button
-              class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
-              onclick="showSalesTab(event, 'view-sales')"
+              class="loans-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
+              onclick="showLoansTab(event, 'view-loans')"
               data-i18n="tabs.loans.view_loans"
             >
               View Loans
             </button>
           </div>
-          <h2
-            class="text-xl font-bold mb-4"
-            data-i18n="tabs.loans.add_loan_title"
-          >
-            Add a Loan
-          </h2>
-          <form id="loanForm" class="space-y-4">
-            <div>
-              <label
-                for="loanType"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.loans.form.type"
-                >Type</label
-              >
-              <select
-                id="loanType"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              >
-                <option value="" data-i18n="tabs.loans.form.select_type">
-                  Select Type
-                </option>
-                <option data-i18n="tabs.loans.form.type_taken">
-                  Loan Taken
-                </option>
-                <option data-i18n="tabs.loans.form.type_repaid">
-                  Loan Repaid
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="person"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.loans.form.person"
-                >Person/Organization</label
-              >
-              <input
-                id="person"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                for="loanAmount"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.loans.form.amount"
-                >Amount (₹)</label
-              >
-              <input
-                type="number"
-                id="loanAmount"
-                step="0.01"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                for="status"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.loans.form.status"
-                >Status</label
-              >
-              <select
-                id="status"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              >
-                <option data-i18n="tabs.loans.form.status_pending">
-                  Pending
-                </option>
-                <option data-i18n="tabs.loans.form.status_completed">
-                  Completed
-                </option>
-                <option data-i18n="tabs.loans.form.status_overdue">
-                  Overdue
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="loanNotes"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.loans.form.notes"
-                >Notes (Optional)</label
-              >
-              <textarea
-                id="loanNotes"
-                rows="3"
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
-              data-i18n="tabs.loans.form.submit"
+
+          <!-- Add Loan Form -->
+          <div id="add-loan" class="loans-content active">
+            <h3
+              class="text-lg font-semibold mb-3"
+              data-i18n="tabs.loans.add_new_loan"
             >
-              Add Loan Entry
-            </button>
-          </form>
-          <div
-            id="loan-message"
-            class="mt-3 text-center font-semibold hidden"
-          ></div>
+              Add New Loan Entry
+            </h3>
+            <form id="loanForm" class="space-y-4">
+              <div>
+                <label
+                  for="loanType"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.loans.form.type"
+                  >Type</label
+                >
+                <select
+                  id="loanType"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                >
+                  <option value="" data-i18n="tabs.loans.form.select_type">
+                    Select Type
+                  </option>
+                  <option data-i18n="tabs.loans.form.type_taken">
+                    Loan Taken
+                  </option>
+                  <option data-i18n="tabs.loans.form.type_repaid">
+                    Loan Repaid
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label
+                  for="person"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.loans.form.person"
+                  >Person/Organization</label
+                >
+                <input
+                  id="person"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label
+                  for="loanAmount"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.loans.form.amount"
+                  >Amount (₹)</label
+                >
+                <input
+                  type="number"
+                  id="loanAmount"
+                  step="0.01"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label
+                  for="status"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.loans.form.status"
+                  >Status</label
+                >
+                <select
+                  id="status"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                >
+                  <option data-i18n="tabs.loans.form.status_pending">
+                    Pending
+                  </option>
+                  <option data-i18n="tabs.loans.form.status_completed">
+                    Completed
+                  </option>
+                  <option data-i18n="tabs.loans.form.status_overdue">
+                    Overdue
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label
+                  for="loanNotes"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.loans.form.notes"
+                  >Notes (Optional)</label
+                >
+                <textarea
+                  id="loanNotes"
+                  rows="3"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+                data-i18n="tabs.loans.form.submit"
+              >
+                Add Loan Entry
+              </button>
+            </form>
+            <div
+              id="loan-message"
+              class="mt-3 text-center font-semibold hidden"
+            ></div>
+          </div>
+
+          <!-- View Loans -->
+          <div id="view-loans" class="loans-content hidden">
+            <div class="flex flex-wrap justify-between items-center mb-4">
+              <div class="flex gap-2 items-center">
+                <div id="loans-spinner-insert"></div>
+
+                <h3
+                  class="text-lg font-semibold"
+                  data-i18n="tabs.loans.daily_loans"
+                >
+                  Daily Loans
+                </h3>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  class="date-nav-btn"
+                  onclick="changeLoansDate(-1)"
+                  data-i18n="tabs.sales.previous"
+                >
+                  ← Previous
+                </button>
+                <span
+                  id="loans-selected-date"
+                  class="font-medium px-3 py-1 bg-blue-100 rounded-lg"
+                ></span>
+                <button
+                  class="date-nav-btn"
+                  onclick="changeLoansDate(1)"
+                  data-i18n="tabs.sales.next"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+
+            <!-- Daily Summary -->
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-6"
+            >
+              <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                <div
+                  id="daily-total-loans"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.loans.total_loans"
+                >
+                  Total Loans
+                </div>
+              </div>
+              <div
+                class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500"
+              >
+                <div
+                  id="daily-loans-taken"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  ₹0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.loans.loans_taken"
+                >
+                  Loans Taken
+                </div>
+              </div>
+              <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                <div
+                  id="daily-loans-repaid"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  ₹0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.loans.loans_repaid"
+                >
+                  Loans Repaid
+                </div>
+              </div>
+            </div>
+
+            <!-- Loans Table -->
+            <div class="overflow-x-auto">
+              <table
+                class="min-w-full bg-white border border-gray-200 rounded-lg"
+              >
+                <thead>
+                  <tr class="bg-gray-100">
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.loans.table.type"
+                    >
+                      Type
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.loans.table.person"
+                    >
+                      Person/Organization
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-right"
+                      data-i18n="tabs.loans.table.amount"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.loans.table.status"
+                    >
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="loans-table-body">
+                  <!-- Loans data will be populated here -->
+                </tbody>
+              </table>
+              <div
+                id="no-loans-message"
+                class="text-center py-4 text-gray-500 hidden"
+                data-i18n="tabs.loans.no_loans"
+              >
+                No loans recorded for this day.
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Dues -->
@@ -798,101 +1174,239 @@
           <!-- Dues Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
             <button
-              class="sales-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
-              onclick="showSalesTab(event, 'add-sale')"
+              class="dues-tab flex-1 p-3 text-gray-700 active hover:not-active:bg-gray-200 active:bg-indigo-600 active:text-white"
+              onclick="showDuesTab(event, 'add-due')"
               data-i18n="tabs.dues.add_due"
             >
               Add Due
             </button>
             <button
-              class="sales-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
-              onclick="showSalesTab(event, 'view-sales')"
+              class="dues-tab flex-1 p-3 text-gray-700 hover:not-active:bg-gray-200"
+              onclick="showDuesTab(event, 'view-dues')"
               data-i18n="tabs.dues.view_dues"
             >
               View Dues
             </button>
           </div>
-          <h2
-            class="text-xl font-bold mb-4"
-            data-i18n="tabs.dues.add_due_title"
-          >
-            Add a Due
-          </h2>
-          <form id="dueForm" class="space-y-4">
-            <div>
-              <label
-                for="customerName"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.dues.form.customer_name"
-                >Customer Name</label
-              >
-              <input
-                id="customerName"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                for="dueAmount"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.dues.form.amount_due"
-                >Amount Due (₹)</label
-              >
-              <input
-                type="number"
-                id="dueAmount"
-                step="0.01"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                for="dueStatus"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.dues.form.status"
-                >Status</label
-              >
-              <select
-                id="dueStatus"
-                required
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              >
-                <option data-i18n="tabs.dues.form.status_pending">
-                  Pending
-                </option>
-                <option data-i18n="tabs.dues.form.status_paid">Paid</option>
-                <option data-i18n="tabs.dues.form.status_overdue">
-                  Overdue
-                </option>
-              </select>
-            </div>
-            <div>
-              <label
-                for="dueNotes"
-                class="block font-semibold text-gray-700 mb-1"
-                data-i18n="tabs.dues.form.notes"
-                >Notes (Optional)</label
-              >
-              <textarea
-                id="dueNotes"
-                rows="3"
-                class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
-              data-i18n="tabs.dues.form.submit"
+
+          <!-- Add Due Form -->
+          <div id="add-due" class="dues-content active">
+            <h3
+              class="text-lg font-semibold mb-3"
+              data-i18n="tabs.dues.add_new_due"
             >
-              Add Due Entry
-            </button>
-          </form>
-          <div
-            id="due-message"
-            class="mt-3 text-center font-semibold hidden"
-          ></div>
+              Add New Due Entry
+            </h3>
+            <form id="dueForm" class="space-y-4">
+              <div>
+                <label
+                  for="customerName"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.dues.form.customer_name"
+                  >Customer Name</label
+                >
+                <input
+                  id="customerName"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label
+                  for="dueAmount"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.dues.form.amount_due"
+                  >Amount Due (₹)</label
+                >
+                <input
+                  type="number"
+                  id="dueAmount"
+                  step="0.01"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label
+                  for="dueStatus"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.dues.form.status"
+                  >Status</label
+                >
+                <select
+                  id="dueStatus"
+                  required
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                >
+                  <option data-i18n="tabs.dues.form.status_pending">
+                    Pending
+                  </option>
+                  <option data-i18n="tabs.dues.form.status_paid">Paid</option>
+                  <option data-i18n="tabs.dues.form.status_overdue">
+                    Overdue
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label
+                  for="dueNotes"
+                  class="block font-semibold text-gray-700 mb-1"
+                  data-i18n="tabs.dues.form.notes"
+                  >Notes (Optional)</label
+                >
+                <textarea
+                  id="dueNotes"
+                  rows="3"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="submit-btn w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg"
+                data-i18n="tabs.dues.form.submit"
+              >
+                Add Due Entry
+              </button>
+            </form>
+            <div
+              id="due-message"
+              class="mt-3 text-center font-semibold hidden"
+            ></div>
+          </div>
+
+          <!-- View Dues -->
+          <div id="view-dues" class="dues-content hidden">
+            <div class="flex flex-wrap justify-between items-center mb-4">
+              <div class="flex gap-2 items-center">
+                <div id="dues-spinner-insert"></div>
+
+                <h3
+                  class="text-lg font-semibold"
+                  data-i18n="tabs.dues.daily_dues"
+                >
+                  Daily Dues
+                </h3>
+              </div>
+              <div class="flex items-center space-x-2">
+                <button
+                  class="date-nav-btn"
+                  onclick="changeDuesDate(-1)"
+                  data-i18n="tabs.sales.previous"
+                >
+                  ← Previous
+                </button>
+                <span
+                  id="dues-selected-date"
+                  class="font-medium px-3 py-1 bg-blue-100 rounded-lg"
+                ></span>
+                <button
+                  class="date-nav-btn"
+                  onclick="changeDuesDate(1)"
+                  data-i18n="tabs.sales.next"
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+
+            <!-- Daily Summary -->
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-6"
+            >
+              <div
+                class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500"
+              >
+                <div
+                  id="daily-total-dues"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.dues.total_dues"
+                >
+                  Total Dues
+                </div>
+              </div>
+              <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                <div
+                  id="daily-pending-dues"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  ₹0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.dues.pending_dues"
+                >
+                  Pending Dues
+                </div>
+              </div>
+              <div
+                class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500"
+              >
+                <div
+                  id="daily-paid-dues"
+                  class="text-xl font-bold text-gray-800"
+                >
+                  ₹0
+                </div>
+                <div
+                  class="text-gray-600 text-sm"
+                  data-i18n="tabs.dues.paid_dues"
+                >
+                  Paid Dues
+                </div>
+              </div>
+            </div>
+
+            <!-- Dues Table -->
+            <div class="overflow-x-auto">
+              <table
+                class="min-w-full bg-white border border-gray-200 rounded-lg"
+              >
+                <thead>
+                  <tr class="bg-gray-100">
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.dues.table.customer"
+                    >
+                      Customer Name
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-right"
+                      data-i18n="tabs.dues.table.amount"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.dues.table.status"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="py-2 px-4 border-b text-left"
+                      data-i18n="tabs.dues.table.notes"
+                    >
+                      Notes
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="dues-table-body">
+                  <!-- Dues data will be populated here -->
+                </tbody>
+              </table>
+              <div
+                id="no-dues-message"
+                class="text-center py-4 text-gray-500 hidden"
+                data-i18n="tabs.dues.no_dues"
+              >
+                No dues recorded for this day.
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Dashboard -->
@@ -961,7 +1475,7 @@
     </div>
     <script>
       const API_URL =
-        "https://script.google.com/macros/s/AKfycbytLSBszyk3v78evYr0zIPgBUXo4dCkfLgRr1WYtLgKfOJvw8sFFpvaA-zcjEaXGeeI5w/exec";
+        "https://script.google.com/macros/s/AKfycbzOtNC9Bgq6Kl5Pw27ucwuVC3kAcfQ-EUFKP65vjL_5VEMv3xdKe2rSPa0V8mgghUrguw/exec";
 
       const spinnerDiv = document.getElementById("spinnerDiv");
 
@@ -969,6 +1483,15 @@
       let splitPaymentRows = [];
       // Current date for sales view
       let currentViewDate = new Date();
+      // Current dates for other views
+      let currentExpensesDate = new Date();
+      let currentLoansDate = new Date();
+      let currentDuesDate = new Date();
+      // Current periods for all views
+      let currentSalesPeriod = "daily";
+      let currentExpensesPeriod = "daily";
+      let currentLoansPeriod = "daily";
+      let currentDuesPeriod = "daily";
 
       // Format date as YYYY-MM-DD
       function formatDate(date) {
@@ -993,7 +1516,7 @@
       function changeDate(days) {
         currentViewDate.setDate(currentViewDate.getDate() + days);
         updateDateDisplay();
-        loadDailySales();
+        loadSalesData();
       }
 
       // Update the date display
@@ -1001,6 +1524,109 @@
         document.getElementById("selected-date").textContent =
           formatDateDisplay(currentViewDate);
       }
+
+      // Update expenses date display
+      function updateExpensesDateDisplay() {
+        document.getElementById("expenses-selected-date").textContent =
+          formatDateDisplay(currentExpensesDate);
+      }
+
+      // Update loans date display
+      function updateLoansDateDisplay() {
+        document.getElementById("loans-selected-date").textContent =
+          formatDateDisplay(currentLoansDate);
+      }
+
+      // Update dues date display
+      function updateDuesDateDisplay() {
+        document.getElementById("dues-selected-date").textContent =
+          formatDateDisplay(currentDuesDate);
+      }
+
+      // Change date for expenses view
+      window.changeExpensesDate = function (days) {
+        currentExpensesDate.setDate(currentExpensesDate.getDate() + days);
+        updateExpensesDateDisplay();
+        loadExpensesData();
+      };
+
+      // Change date for loans view
+      window.changeLoansDate = function (days) {
+        currentLoansDate.setDate(currentLoansDate.getDate() + days);
+        updateLoansDateDisplay();
+        loadDailyLoans();
+      };
+
+      // Change date for dues view
+      window.changeDuesDate = function (days) {
+        currentDuesDate.setDate(currentDuesDate.getDate() + days);
+        updateDuesDateDisplay();
+        loadDailyDues();
+      };
+
+      // Set period for sales view
+      window.setPeriod = function (period) {
+        currentSalesPeriod = period;
+
+        // Update button states
+        document.querySelectorAll(".period-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        document
+          .querySelector(`[data-period="${period}"]`)
+          .classList.add("active");
+
+        // Reload data
+        loadSalesData();
+      };
+
+      // Set period for expenses view
+      window.setExpensesPeriod = function (period) {
+        currentExpensesPeriod = period;
+
+        // Update button states
+        document.querySelectorAll(".expenses-period-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        document
+          .querySelector(`[data-expenses-period="${period}"]`)
+          .classList.add("active");
+
+        // Reload data
+        loadExpensesData();
+      };
+
+      // Set period for loans view
+      window.setLoansPeriod = function (period) {
+        currentLoansPeriod = period;
+
+        // Update button states
+        document.querySelectorAll(".loans-period-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        document
+          .querySelector(`[data-loans-period="${period}"]`)
+          .classList.add("active");
+
+        // Reload data
+        loadLoansData();
+      };
+
+      // Set period for dues view
+      window.setDuesPeriod = function (period) {
+        currentDuesPeriod = period;
+
+        // Update button states
+        document.querySelectorAll(".dues-period-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        document
+          .querySelector(`[data-dues-period="${period}"]`)
+          .classList.add("active");
+
+        // Reload data
+        loadDuesData();
+      };
 
       // Show main tabs
       function showTab(event, tabName) {
@@ -1031,6 +1657,30 @@
           // Set default tab to add sale
           showSalesTab(null, "add-sale");
         }
+
+        // If expenses is selected, reset to today's date
+        if (tabName === "expense") {
+          currentExpensesDate = new Date();
+          updateExpensesDateDisplay();
+          // Set default tab to add expense
+          showExpensesTab(null, "add-expense");
+        }
+
+        // If loans is selected, reset to today's date
+        if (tabName === "loan") {
+          currentLoansDate = new Date();
+          updateLoansDateDisplay();
+          // Set default tab to add loan
+          showLoansTab(null, "add-loan");
+        }
+
+        // If dues is selected, reset to today's date
+        if (tabName === "due") {
+          currentDuesDate = new Date();
+          updateDuesDateDisplay();
+          // Set default tab to add due
+          showDuesTab(null, "add-due");
+        }
       }
 
       // Show sales tabs
@@ -1056,12 +1706,100 @@
 
         // If viewing sales, load the data
         if (tabName === "view-sales") {
-          loadDailySales();
+          loadSalesData();
         }
       }
 
-      // Load daily sales for the selected date
-      async function loadDailySales() {
+      // Show expenses tabs
+      function showExpensesTab(event, tabName) {
+        // Hide all expenses content
+        document.querySelectorAll(".expenses-content").forEach((section) => {
+          section.classList.add("hidden");
+          section.classList.remove("active");
+        });
+        document.getElementById(tabName).classList.add("active");
+
+        // Remove active class from all expenses tabs
+        document.querySelectorAll(".expenses-tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Show selected expenses content and activate tab
+        document.getElementById(tabName).classList.remove("hidden");
+        if (event) {
+          event.target.classList.add("active");
+        } else {
+          // Default to first tab if no event
+          document.querySelector(".expenses-tab").classList.add("active");
+        }
+
+        // If viewing expenses, load the data
+        if (tabName === "view-expenses") {
+          loadExpensesData();
+        }
+      }
+
+      // Show loans tabs
+      function showLoansTab(event, tabName) {
+        // Hide all loans content
+        document.querySelectorAll(".loans-content").forEach((section) => {
+          section.classList.add("hidden");
+          section.classList.remove("active");
+        });
+
+        document.getElementById(tabName).classList.add("active");
+
+        // Remove active class from all loans tabs
+        document.querySelectorAll(".loans-tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Show selected loans content and activate tab
+        document.getElementById(tabName).classList.remove("hidden");
+        if (event) {
+          event.target.classList.add("active");
+        } else {
+          // Default to first tab if no event
+          document.querySelector(".loans-tab").classList.add("active");
+        }
+
+        // If viewing loans, load the data
+        if (tabName === "view-loans") {
+          loadDailyLoans();
+        }
+      }
+
+      // Show dues tabs
+      function showDuesTab(event, tabName) {
+        // Hide all dues content
+        document.querySelectorAll(".dues-content").forEach((section) => {
+          section.classList.add("hidden");
+          section.classList.remove("active");
+        });
+        document.getElementById(tabName).classList.add("active");
+
+        // Remove active class from all dues tabs
+        document.querySelectorAll(".dues-tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Show selected dues content and activate tab
+        document.getElementById(tabName).classList.remove("hidden");
+        if (event) {
+          event.target.classList.add("active");
+        } else {
+          // Default to first tab if no event
+          document.querySelector(".dues-tab").classList.add("active");
+        }
+
+        // If viewing dues, load the data
+        if (tabName === "view-dues") {
+          loadDailyDues();
+        }
+      }
+
+      // Load sales data for the selected date and period
+      async function loadSalesData() {
         try {
           const spinnerInsert = document.getElementById("spinnerInsert");
           const spinnerSvg = ` <svg
@@ -1087,7 +1825,7 @@
           spinnerInsert.innerHTML = spinnerSvg;
           const dateStr = formatDate(currentViewDate);
           const response = await fetch(
-            `${API_URL}?type=dailySales&date=${dateStr}`,
+            `${API_URL}?type=sales&date=${dateStr}&period=${currentSalesPeriod}`,
             {
               redirect: "follow",
               method: "GET",
@@ -1149,6 +1887,268 @@
             .classList.remove("hidden");
         } finally {
           spinnerInsert.innerHTML = "";
+        }
+      }
+
+      // Load expenses data for the selected date and period
+      async function loadExpensesData() {
+        try {
+          const spinnerInsert = document.getElementById(
+            "expenses-spinner-insert"
+          );
+          const spinnerSvg = ` <svg
+        class="mr-3 -ml-1 size-6  animate-spin text-indigo-600"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>`;
+          spinnerInsert.innerHTML = spinnerSvg;
+          const dateStr = formatDate(currentExpensesDate);
+          const response = await fetch(
+            `${API_URL}?type=expenses&date=${dateStr}&period=${currentExpensesPeriod}`,
+            {
+              redirect: "follow",
+              method: "GET",
+              headers: {
+                "Content-Type": "text/plain;charset=utf-8",
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          // Update summary cards
+          document.getElementById("daily-total-expenses").textContent =
+            data.totalExpenses || 0;
+          document.getElementById("daily-total-amount").textContent =
+            "₹" + (data.totalAmount || 0).toFixed(2);
+          document.getElementById("daily-categories-count").textContent =
+            data.categoriesCount || 0;
+
+          // Update expenses table
+          const tableBody = document.getElementById("expenses-table-body");
+          const noExpensesMessage = document.getElementById(
+            "no-expenses-message"
+          );
+
+          if (data.expenses && data.expenses.length > 0) {
+            tableBody.innerHTML = "";
+            noExpensesMessage.classList.add("hidden");
+
+            data.expenses.forEach((expense) => {
+              const row = document.createElement("tr");
+              row.className = "hover:bg-gray-50";
+              row.innerHTML = `
+              <td class="py-2 px-4 border-b">${expense.description}</td>
+              <td class="py-2 px-4 border-b">${expense.category}</td>
+              <td class="py-2 px-4 border-b text-right">₹${expense.amount.toFixed(
+                2
+              )}</td>
+            `;
+              tableBody.appendChild(row);
+            });
+          } else {
+            tableBody.innerHTML = "";
+            noExpensesMessage.classList.remove("hidden");
+          }
+        } catch (error) {
+          console.error("Error loading daily expenses:", error);
+          // Set default values if expenses fail to load
+          document.getElementById("daily-total-expenses").textContent = "0";
+          document.getElementById("daily-total-amount").textContent = "₹0";
+          document.getElementById("daily-categories-count").textContent = "0";
+          document.getElementById("expenses-table-body").innerHTML = "";
+          document
+            .getElementById("no-expenses-message")
+            .classList.remove("hidden");
+        } finally {
+          document.getElementById("expenses-spinner-insert").innerHTML = "";
+        }
+      }
+
+      // Load daily loans for the selected date
+      async function loadDailyLoans() {
+        try {
+          const spinnerInsert = document.getElementById("loans-spinner-insert");
+          const spinnerSvg = ` <svg
+        class="mr-3 -ml-1 size-6  animate-spin text-indigo-600"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>`;
+          spinnerInsert.innerHTML = spinnerSvg;
+          const dateStr = formatDate(currentLoansDate);
+          const response = await fetch(
+            `${API_URL}?type=dailyLoans&date=${dateStr}`,
+            {
+              redirect: "follow",
+              method: "GET",
+              headers: {
+                "Content-Type": "text/plain;charset=utf-8",
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          // Update summary cards
+          document.getElementById("daily-total-loans").textContent =
+            data.totalLoans || 0;
+          document.getElementById("daily-loans-taken").textContent =
+            "₹" + (data.loansTaken || 0).toFixed(2);
+          document.getElementById("daily-loans-repaid").textContent =
+            "₹" + (data.loansRepaid || 0).toFixed(2);
+
+          // Update loans table
+          const tableBody = document.getElementById("loans-table-body");
+          const noLoansMessage = document.getElementById("no-loans-message");
+
+          if (data.loans && data.loans.length > 0) {
+            tableBody.innerHTML = "";
+            noLoansMessage.classList.add("hidden");
+
+            data.loans.forEach((loan) => {
+              const row = document.createElement("tr");
+              row.className = "hover:bg-gray-50";
+              row.innerHTML = `
+              <td class="py-2 px-4 border-b">${loan.type}</td>
+              <td class="py-2 px-4 border-b">${loan.person}</td>
+              <td class="py-2 px-4 border-b text-right">₹${loan.amount.toFixed(
+                2
+              )}</td>
+              <td class="py-2 px-4 border-b">${loan.status}</td>
+            `;
+              tableBody.appendChild(row);
+            });
+          } else {
+            tableBody.innerHTML = "";
+            noLoansMessage.classList.remove("hidden");
+          }
+        } catch (error) {
+          console.error("Error loading daily loans:", error);
+          // Set default values if loans fail to load
+          document.getElementById("daily-total-loans").textContent = "0";
+          document.getElementById("daily-loans-taken").textContent = "₹0";
+          document.getElementById("daily-loans-repaid").textContent = "₹0";
+          document.getElementById("loans-table-body").innerHTML = "";
+          document
+            .getElementById("no-loans-message")
+            .classList.remove("hidden");
+        } finally {
+          document.getElementById("loans-spinner-insert").innerHTML = "";
+        }
+      }
+
+      // Load daily dues for the selected date
+      async function loadDailyDues() {
+        try {
+          const spinnerInsert = document.getElementById("dues-spinner-insert");
+          const spinnerSvg = ` <svg
+        class="mr-3 -ml-1 size-6  animate-spin text-indigo-600"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>`;
+          spinnerInsert.innerHTML = spinnerSvg;
+          const dateStr = formatDate(currentDuesDate);
+          const response = await fetch(
+            `${API_URL}?type=dailyDues&date=${dateStr}`,
+            {
+              redirect: "follow",
+              method: "GET",
+              headers: {
+                "Content-Type": "text/plain;charset=utf-8",
+              },
+            }
+          );
+
+          const data = await response.json();
+
+          // Update summary cards
+          document.getElementById("daily-total-dues").textContent =
+            data.totalDues || 0;
+          document.getElementById("daily-pending-dues").textContent =
+            "₹" + (data.pendingDues || 0).toFixed(2);
+          document.getElementById("daily-paid-dues").textContent =
+            "₹" + (data.paidDues || 0).toFixed(2);
+
+          // Update dues table
+          const tableBody = document.getElementById("dues-table-body");
+          const noDuesMessage = document.getElementById("no-dues-message");
+
+          if (data.dues && data.dues.length > 0) {
+            tableBody.innerHTML = "";
+            noDuesMessage.classList.add("hidden");
+
+            data.dues.forEach((due) => {
+              const row = document.createElement("tr");
+              row.className = "hover:bg-gray-50";
+              row.innerHTML = `
+              <td class="py-2 px-4 border-b">${due.customerName}</td>
+              <td class="py-2 px-4 border-b text-right">₹${due.amount.toFixed(
+                2
+              )}</td>
+              <td class="py-2 px-4 border-b">${due.status}</td>
+              <td class="py-2 px-4 border-b">${due.notes || ""}</td>
+            `;
+              tableBody.appendChild(row);
+            });
+          } else {
+            tableBody.innerHTML = "";
+            noDuesMessage.classList.remove("hidden");
+          }
+        } catch (error) {
+          console.error("Error loading daily dues:", error);
+          // Set default values if dues fail to load
+          document.getElementById("daily-total-dues").textContent = "0";
+          document.getElementById("daily-pending-dues").textContent = "₹0";
+          document.getElementById("daily-paid-dues").textContent = "₹0";
+          document.getElementById("dues-table-body").innerHTML = "";
+          document.getElementById("no-dues-message").classList.remove("hidden");
+        } finally {
+          document.getElementById("dues-spinner-insert").innerHTML = "";
         }
       }
 
@@ -1313,8 +2313,41 @@
                 .getElementById("view-sales")
                 .classList.contains("hidden") === false
             ) {
-              loadDailySales();
+              loadSalesData();
             }
+
+            // If we're in the expenses view, refresh the data
+            if (
+              type === "expense" &&
+              document
+                .getElementById("view-expenses")
+                .classList.contains("hidden") === false
+            ) {
+              loadExpensesData();
+            }
+
+            // If we're in the loans view, refresh the data
+            if (
+              type === "loan" &&
+              document
+                .getElementById("view-loans")
+                .classList.contains("hidden") === false
+            ) {
+              loadDailyLoans();
+            }
+
+            // If we're in the dues view, refresh the data
+            if (
+              type === "due" &&
+              document
+                .getElementById("view-dues")
+                .classList.contains("hidden") === false
+            ) {
+              loadDailyDues();
+            }
+
+            // Refresh vault amount after any transaction
+            loadVaultAmount();
           } else {
             throw new Error(result.message);
           }
@@ -1374,6 +2407,32 @@
         }
       }
 
+      async function loadVaultAmount() {
+        // Show cached value immediately to prevent UI jitter
+        const cached = localStorage.getItem("vaultAmount");
+        if (cached) document.getElementById("vaultAmount").textContent = cached;
+
+        try {
+          const response = await fetch(API_URL + "?type=vault", {
+            redirect: "follow",
+            method: "GET",
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+          });
+          const data = await response.json();
+
+          if (data.status === "success") {
+            const amount = (data.vaultAmount || 0).toFixed(2);
+            document.getElementById("vaultAmount").textContent = amount;
+            localStorage.setItem("vaultAmount", amount);
+          }
+        } catch (error) {
+          console.error("Error loading vault amount:", error);
+          document.getElementById("vaultAmount").textContent = "0.00";
+        }
+      }
+
       // Initialize the page
       document.addEventListener("DOMContentLoaded", () => {
         // Set default date for sale form to today
@@ -1383,16 +2442,87 @@
         document.querySelector(".nav-tab").classList.add("active");
         document.getElementById("sale-form").classList.add("active");
         updateDateDisplay();
+        updateExpensesDateDisplay();
+        updateLoansDateDisplay();
+        updateDuesDateDisplay();
 
         // Load initial data
         loadDashboard();
+        loadVaultAmount();
       });
     </script>
     <script>
       const localeSelect = document.getElementById("locale-select");
 
+      // Check if localStorage is available
+      function isLocalStorageAvailable() {
+        try {
+          const test = "test";
+          localStorage.setItem(test, test);
+          localStorage.removeItem(test);
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      // Get saved locale from localStorage or default to 'en'
+      function getSavedLocale() {
+        if (!isLocalStorageAvailable()) return "en";
+        return localStorage.getItem("userLocale") || "en";
+      }
+
+      // Save locale to localStorage
+      function saveLocale(locale) {
+        if (!isLocalStorageAvailable()) return;
+        localStorage.setItem("userLocale", locale);
+      }
+
+      // Get saved translations from localStorage
+      function getSavedTranslations(locale) {
+        if (!isLocalStorageAvailable()) return null;
+        const saved = localStorage.getItem(`translations_${locale}`);
+        return saved ? JSON.parse(saved) : null;
+      }
+
+      // Save translations to localStorage
+      function saveTranslations(locale, translations) {
+        if (!isLocalStorageAvailable()) return;
+        localStorage.setItem(
+          `translations_${locale}`,
+          JSON.stringify(translations)
+        );
+      }
+
+      // Clear cached translations (useful for development or updates)
+      function clearCachedTranslations() {
+        if (!isLocalStorageAvailable()) return;
+        localStorage.removeItem("translations_en");
+        localStorage.removeItem("translations_ne");
+        console.log("Cached translations cleared");
+      }
+
+      // Force refresh translations from server
+      function refreshTranslations(locale) {
+        if (!isLocalStorageAvailable()) {
+          fetchTranslations(locale);
+          return;
+        }
+        localStorage.removeItem(`translations_${locale}`);
+        fetchTranslations(locale);
+      }
+
       async function fetchTranslations(locale) {
         try {
+          // Check if translations are already cached
+          const cachedTranslations = getSavedTranslations(locale);
+          if (cachedTranslations) {
+            console.log("Using cached translations for:", locale);
+            applyTranslations(cachedTranslations);
+            return cachedTranslations;
+          }
+
+          // Show spinner only when fetching from server
           spinnerDiv.style.display = "flex";
           spinnerDiv.style.alignItems = "center";
           spinnerDiv.style.justifyContent = "center";
@@ -1410,10 +2540,11 @@
           const data = await res.json();
 
           if (data.status === "success") {
-            console.log("Translations loaded:", data.translations);
+            console.log("Translations fetched from server:", data.translations);
 
-            // Example: update some UI elements (if needed)
-            // document.querySelector("#header-title").textContent = data.translations['sales_title'] || "Sales Management";
+            // Cache the translations
+            saveTranslations(locale, data.translations);
+
             applyTranslations(data.translations);
             return data.translations;
           } else {
@@ -1436,14 +2567,22 @@
           });
         });
       }
-      // Default: load English on page load
-      fetchTranslations("en");
+      // Initialize locale on page load
+      function initializeLocale() {
+        const savedLocale = getSavedLocale();
+        localeSelect.value = savedLocale;
+        fetchTranslations(savedLocale);
+      }
 
       // When locale changes
       localeSelect.addEventListener("change", (e) => {
         const locale = e.target.value;
+        saveLocale(locale); // Save the new preference
         fetchTranslations(locale);
       });
+
+      // Initialize locale when DOM is loaded
+      document.addEventListener("DOMContentLoaded", initializeLocale);
 
       async function fetchPaymentMethods() {
         try {
