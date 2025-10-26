@@ -38,14 +38,14 @@
       .expenses-period-btn.active,
       .loans-period-btn.active,
       .dues-period-btn.active {
-        background-color: #3b82f6; /* blue-500 */
+        background-color: #3b82f6; /* indigo-500 */
         color: white;
       }
       .period-btn.active:hover,
       .expenses-period-btn.active:hover,
       .loans-period-btn.active:hover,
       .dues-period-btn.active:hover {
-        background-color: #2563eb; /* blue-600 */
+        background-color: #2563eb; /* indigo-600 */
       }
       .message.success {
         color: #059669; /* green-600 */
@@ -134,7 +134,7 @@
           <!-- Locale Selector -->
           <select
             id="locale-select"
-            class="bg-gray-800 border border-gray-700 text-sm text-white rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 transition"
+            class="bg-gray-800 border border-gray-700 text-sm text-white rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500 transition"
           >
             <option value="en" selected>🇬🇧 English</option>
             <option value="ne">🇳🇵 नेपाली</option>
@@ -224,7 +224,7 @@
                 <input
                   id="productName"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500 focus:outline-none"
                 />
               </div>
 
@@ -242,7 +242,7 @@
                   min="1"
                   step="1"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500 focus:outline-none"
                 />
               </div>
 
@@ -259,7 +259,7 @@
                     id="costPrice"
                     step="0.01"
                     required
-                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -274,7 +274,7 @@
                     id="sellingPrice"
                     step="0.01"
                     required
-                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500 focus:outline-none"
                   />
                 </div>
               </div>
@@ -291,7 +291,7 @@
                   <select
                     id="paymentMethod"
                     value="handcash"
-                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                    class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500 focus:outline-none"
                   >
                     <option
                       value=""
@@ -371,7 +371,7 @@
                   type="date"
                   id="saleDate"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500 focus:outline-none"
                 />
               </div>
 
@@ -385,14 +385,14 @@
                 <textarea
                   id="saleNotes"
                   rows="2"
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500 focus:outline-none"
                 ></textarea>
               </div>
 
               <!-- Calculation Summary -->
-              <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <div class="p-3 bg-indigo-50 rounded-lg border border-indigo-200">
                 <h4
-                  class="font-semibold text-blue-800 mb-2"
+                  class="font-semibold text-indigo-800 mb-2"
                   data-i18n="tabs.sales.form.calculation_summary"
                 >
                   Calculation Summary
@@ -464,7 +464,7 @@
                 </button>
                 <span
                   id="selected-date"
-                  class="font-medium px-3 py-1 bg-blue-100 rounded-lg"
+                  class="font-medium px-3 py-1 bg-indigo-100 rounded-lg"
                 ></span>
                 <button
                   class="date-nav-btn"
@@ -484,7 +484,7 @@
               >
                 <button
                   type="button"
-                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600 active"
+                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:text-indigo-600 active"
                   data-period="daily"
                   data-i18n="global.daily"
                   onclick="setPeriod('daily')"
@@ -493,7 +493,7 @@
                 </button>
                 <button
                   type="button"
-                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:text-indigo-600"
                   data-period="weekly"
                   data-i18n="global.weekly"
                   onclick="setPeriod('weekly')"
@@ -502,7 +502,7 @@
                 </button>
                 <button
                   type="button"
-                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:text-indigo-600"
                   data-period="monthly"
                   data-i18n="global.monthly"
                   onclick="setPeriod('monthly')"
@@ -511,7 +511,7 @@
                 </button>
                 <button
                   type="button"
-                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  class="period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:text-indigo-600"
                   data-period="annually"
                   data-i18n="global.annually"
                   onclick="setPeriod('annually')"
@@ -525,7 +525,9 @@
             <div
               class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-6"
             >
-              <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <div
+                class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500"
+              >
                 <div
                   id="daily-total-sales"
                   class="text-xl font-bold text-gray-800"
@@ -664,7 +666,7 @@
                 <input
                   id="description"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 />
               </div>
               <div>
@@ -677,7 +679,7 @@
                 <select
                   id="category"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 >
                   <option
                     value=""
@@ -717,7 +719,7 @@
                   id="amount"
                   step="0.01"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 />
               </div>
               <button
@@ -757,7 +759,7 @@
                 </button>
                 <span
                   id="expenses-selected-date"
-                  class="font-medium px-3 py-1 bg-blue-100 rounded-lg"
+                  class="font-medium px-3 py-1 bg-indigo-100 rounded-lg"
                 ></span>
                 <button
                   class="date-nav-btn"
@@ -777,7 +779,7 @@
               >
                 <button
                   type="button"
-                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600 active"
+                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:text-indigo-600 active"
                   data-expenses-period="daily"
                   data-i18n="global.daily"
                   onclick="setExpensesPeriod('daily')"
@@ -786,7 +788,7 @@
                 </button>
                 <button
                   type="button"
-                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:text-indigo-600"
                   data-expenses-period="weekly"
                   data-i18n="global.weekly"
                   onclick="setExpensesPeriod('weekly')"
@@ -795,7 +797,7 @@
                 </button>
                 <button
                   type="button"
-                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white border-r border-gray-300 hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:text-indigo-600"
                   data-expenses-period="monthly"
                   data-i18n="global.monthly"
                   onclick="setExpensesPeriod('monthly')"
@@ -804,7 +806,7 @@
                 </button>
                 <button
                   type="button"
-                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600"
+                  class="expenses-period-btn px-3 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:z-10 focus:ring-2 focus:ring-indigo-500 focus:text-indigo-600"
                   data-expenses-period="annually"
                   data-i18n="global.annually"
                   onclick="setExpensesPeriod('annually')"
@@ -951,7 +953,7 @@
                 <select
                   id="loanType"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 >
                   <option value="" data-i18n="tabs.loans.form.select_type">
                     Select Type
@@ -974,7 +976,7 @@
                 <input
                   id="person"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 />
               </div>
               <div>
@@ -989,7 +991,7 @@
                   id="loanAmount"
                   step="0.01"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 />
               </div>
               <div>
@@ -1002,7 +1004,7 @@
                 <select
                   id="status"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 >
                   <option data-i18n="tabs.loans.form.status_pending">
                     Pending
@@ -1025,7 +1027,7 @@
                 <textarea
                   id="loanNotes"
                   rows="3"
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 ></textarea>
               </div>
               <button
@@ -1065,7 +1067,7 @@
                 </button>
                 <span
                   id="loans-selected-date"
-                  class="font-medium px-3 py-1 bg-blue-100 rounded-lg"
+                  class="font-medium px-3 py-1 bg-indigo-100 rounded-lg"
                 ></span>
                 <button
                   class="date-nav-btn"
@@ -1081,7 +1083,9 @@
             <div
               class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-6"
             >
-              <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+              <div
+                class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500"
+              >
                 <div
                   id="daily-total-loans"
                   class="text-xl font-bold text-gray-800"
@@ -1218,7 +1222,7 @@
                 <input
                   id="customerName"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 />
               </div>
               <div>
@@ -1233,7 +1237,7 @@
                   id="dueAmount"
                   step="0.01"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 />
               </div>
               <div>
@@ -1246,7 +1250,7 @@
                 <select
                   id="dueStatus"
                   required
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 >
                   <option data-i18n="tabs.dues.form.status_pending">
                     Pending
@@ -1267,7 +1271,7 @@
                 <textarea
                   id="dueNotes"
                   rows="3"
-                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-blue-500"
+                  class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500"
                 ></textarea>
               </div>
               <button
@@ -1307,7 +1311,7 @@
                 </button>
                 <span
                   id="dues-selected-date"
-                  class="font-medium px-3 py-1 bg-blue-100 rounded-lg"
+                  class="font-medium px-3 py-1 bg-indigo-100 rounded-lg"
                 ></span>
                 <button
                   class="date-nav-btn"
@@ -1428,7 +1432,9 @@
             Business Dashboard
           </h2>
           <div class="grid grid-cols-2 gap-4 mb-5">
-            <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-blue-500">
+            <div
+              class="bg-gray-100 p-4 rounded-lg border-l-4 border-indigo-500"
+            >
               <div id="totalSales" class="text-2xl font-bold text-gray-800">
                 0
               </div>
@@ -1439,7 +1445,9 @@
                 Total Sales
               </div>
             </div>
-            <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-blue-500">
+            <div
+              class="bg-gray-100 p-4 rounded-lg border-l-4 border-indigo-500"
+            >
               <div id="totalProfit" class="text-2xl font-bold text-gray-800">
                 ₹0
               </div>
