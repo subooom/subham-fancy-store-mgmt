@@ -76,14 +76,14 @@
     </style>
   </head>
   <body
-    class="relative min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 p-5 font-sans"
+    class="relative min-h-screen bg-gradient-to-br text-xl from-indigo-400 to-purple-600 p-5 font-sans"
   >
     <div
       id="spinnerDiv"
       class="fixed inset-0 bg-black/30 z-20 max-h-screen mx-auto rounded-2xl hidden"
     >
       <svg
-        class="mr-3 -ml-1 size-5 md:size-10 lg:size-14 animate-spin text-indigo-700"
+        class="mr-3 -ml-1 size-5 md:size-10 lg:size-14 animate-spin text-indigo-100"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -191,6 +191,47 @@
           <h2 class="text-xl font-bold mb-4" data-i18n="tabs.sales.title">
             Sales Management
           </h2>
+          <div
+            id="dailySnapshot"
+            class="bg-gradient-to-r mb-4 from-indigo-200 via-purple-200 to-pink-200 text-black rounded-2xl shadow-2xl p-6 mt-6 transition-all duration-500 hover:scale-[1.02]"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-lg font-semibold" data-i18n="sales.todaySnapshot">
+                Today's Snapshot
+              </h2>
+              <span id="snapshotDate" class="text-sm opacity-80"></span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p class="text-2xl font-bold" id="salesAmount">₹0</p>
+                <p class="text-sm opacity-90" data-i18n="sales.totalSales">
+                  Sales
+                </p>
+              </div>
+              <div>
+                <p class="text-2xl font-bold" id="profitAmount">₹0</p>
+                <p class="text-sm opacity-90" data-i18n="sales.totalProfit">
+                  Profit
+                </p>
+              </div>
+              <div>
+                <p class="text-2xl font-bold" id="itemsSold">0</p>
+                <p class="text-sm opacity-90" data-i18n="sales.itemsSold">
+                  Items Sold
+                </p>
+              </div>
+            </div>
+
+            <div
+              id="motivationMsg"
+              class="text-center mt-4 text-sm font-medium opacity-90 italic"
+            >
+              <span data-i18n="sales.motivation.start"
+                >Start logging to see your progress!</span
+              >
+            </div>
+          </div>
 
           <!-- Sales Tabs -->
           <div class="flex mb-4 bg-gray-100 rounded-lg overflow-hidden">
@@ -267,12 +308,20 @@
                   />
                 </div>
                 <div>
-                  <label
-                    for="sellingPrice"
-                    class="block font-semibold text-gray-700 mb-1"
-                    data-i18n="tabs.sales.form.selling_price"
-                    >Selling Price (₹)</label
-                  >
+                  <div class="flex gap-2 mb-1">
+                    <label
+                      for="sellingPrice"
+                      class="block font-semibold text-gray-700"
+                      data-i18n="tabs.sales.form.selling_price"
+                      >Selling Price (₹)
+                    </label>
+                    <span
+                      id="instantProfitBadge"
+                      class="hidden text-sm font-semibold px-2 py-0 flex items-center justify-center rounded-full bg-green-200 text-green-800 transition-all duration-200"
+                    >
+                      +₹0
+                    </span>
+                  </div>
                   <input
                     type="number"
                     id="sellingPrice"
@@ -1515,6 +1564,64 @@
       let currentLoansPeriod = "daily";
       let currentDuesPeriod = "daily";
 
+      const sellingPriceInput = document.getElementById("sellingPrice");
+      const costPriceInput = document.getElementById("costPrice");
+      const profitBadge = document.getElementById("instantProfitBadge");
+
+      function updateProfitBadge() {
+        const selling = parseFloat(sellingPriceInput.value) || 0;
+        const cost = parseFloat(costPriceInput.value) || 0;
+        const profit = selling - cost;
+
+        if (!profit || selling === 0 || cost === 0) {
+          profitBadge.classList.add("hidden");
+          profitBadge.classList.remove("opacity-100");
+          return;
+        }
+
+        profitBadge.textContent = `${profit >= 0 ? "+" : "-"}₹${Math.abs(
+          profit
+        )}`;
+
+        profitBadge.classList.remove("hidden");
+        profitBadge.style.backgroundColor = profit >= 0 ? "#bbf7d0" : "#fecaca"; // green-200 / red-200
+        profitBadge.style.color = profit >= 0 ? "#166534" : "#991b1b"; // green-800 / red-800
+
+        setTimeout(() => {
+          profitBadge.classList.add("opacity-100");
+        }, 10);
+      }
+
+      sellingPriceInput.addEventListener("input", updateProfitBadge);
+      costPriceInput.addEventListener("input", updateProfitBadge);
+      // Incremental instant update
+      function incrementSalesSummary(newSale) {
+        const countEl = document.getElementById("itemsSold");
+        const revenueEl = document.getElementById("salesAmount");
+        const profitEl = document.getElementById("profitAmount");
+
+        const cost = parseFloat(newSale.costPrice);
+        const sell = parseFloat(newSale.sellingPrice);
+        const profit = sell - cost;
+
+        // Update numbers instantly
+        countEl.textContent = parseInt(countEl.textContent) + 1;
+        revenueEl.textContent = `₹${(
+          parseFloat(revenueEl.textContent.replace("₹", "")) + sell
+        ).toFixed(2)}`;
+        profitEl.textContent = `₹${(
+          parseFloat(profitEl.textContent.replace("₹", "")) + profit
+        ).toFixed(2)}`;
+
+        // Visual dopamine bump 💥
+        [countEl, revenueEl, profitEl].forEach((el) => {
+          el.classList.add("scale-110", "text-green-500");
+          setTimeout(
+            () => el.classList.remove("scale-110", "text-green-500"),
+            300
+          );
+        });
+      }
       // Format date as YYYY-MM-DD
       function formatDate(date) {
         const year = date.getFullYear();
@@ -2217,7 +2324,14 @@
             }
           }
 
-          await submitForm("sale", formData, "sale-message");
+          submitForm("sale", formData, "sale-message")
+            .then(() => {
+              window.scrollTo(0, 0);
+              setTimeout(() => {
+                incrementSalesSummary(formData);
+              }, [1600]);
+            })
+            .catch(console.error);
         });
 
       // Expense Form Handler
@@ -2826,6 +2940,42 @@
 
         // Load initial data
         loadDashboard();
+
+        fetchSalesSummary();
+
+        // Fetch data
+        async function fetchSalesSummary(
+          dateStr = new Date().toISOString().split("T")[0],
+          period = "daily"
+        ) {
+          try {
+            const response = await fetch(
+              `${API_URL}?type=sales&date=${dateStr}&period=${period}`,
+              {
+                method: "GET",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+              }
+            );
+
+            if (!response.ok) throw new Error("Failed to fetch sales summary");
+            const data = await response.json();
+            renderSalesSummary(data);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
+        // Render data to DOM
+        function renderSalesSummary(data) {
+          document.getElementById("itemsSold").textContent =
+            data.totalSales || 0;
+          document.getElementById("salesAmount").textContent = `₹${
+            data.totalRevenue || 0
+          }`;
+          document.getElementById("profitAmount").textContent = `₹${
+            data.totalProfit || 0
+          }`;
+        }
       });
     </script>
   </body>

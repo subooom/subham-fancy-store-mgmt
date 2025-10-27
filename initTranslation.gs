@@ -16,7 +16,7 @@ function initializeTranslationSheet() {
 
   const exampleData = [
     // ===== HEADER =====
-    ["business.name", "en", "Ssubham Fancy Store", "Header", new Date()],
+    ["business.name", "en", "Subham Fancy Store", "Header", new Date()],
     ["business.name", "ne", "सुभम फेसि स्टोर", "Header", new Date()],
     [
       "page.description",
@@ -58,6 +58,33 @@ function initializeTranslationSheet() {
       "Sales Section",
       new Date(),
     ],
+    ["sales.todaySnapshot", "en", "Today's Snapshot", "Sales Card", new Date()],
+    ["sales.todaySnapshot", "ne", "आजको सारांश", "Sales Card", new Date()],
+
+    ["sales.totalSales", "en", "Sales", "Sales Card", new Date()],
+    ["sales.totalSales", "ne", "बिक्री", "Sales Card", new Date()],
+
+    ["sales.totalProfit", "en", "Profit", "Sales Card", new Date()],
+    ["sales.totalProfit", "ne", "नाफा", "Sales Card", new Date()],
+
+    ["sales.itemsSold", "en", "Items Sold", "Sales Card", new Date()],
+    ["sales.itemsSold", "ne", "बिक्री भएका सामान", "Sales Card", new Date()],
+
+    [
+      "sales.motivation.start",
+      "en",
+      "Start logging to see your progress!",
+      "Sales Card",
+      new Date(),
+    ],
+    [
+      "sales.motivation.start",
+      "ne",
+      "प्रगति देख्न बिक्री विवरण हाल्न सुरु गर्नुहोस्!",
+      "Sales Card",
+      new Date(),
+    ],
+
     ["tabs.sales.add_sale", "en", "Add Sale", "Sales Tabs", new Date()],
     ["tabs.sales.add_sale", "ne", "बिक्री थप्नुहोस्", "Sales Tabs", new Date()],
     ["tabs.sales.view_sale", "en", "View Sales", "Sales Tabs", new Date()],
