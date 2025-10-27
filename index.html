@@ -1604,18 +1604,18 @@
         const revenueEl = document.getElementById("salesAmount");
         const profitEl = document.getElementById("profitAmount");
 
-        const cost = parseFloat(newSale.costPrice);
-        const sell = parseFloat(newSale.sellingPrice);
+        const cost = parseInt(newSale.costPrice);
+        const sell = parseInt(newSale.sellingPrice);
         const profit = sell - cost;
 
         // Update numbers instantly
         countEl.textContent = parseInt(countEl.textContent) + 1;
-        revenueEl.textContent = `₹${(
-          parseFloat(revenueEl.textContent.replace("₹", "")) + sell
-        ).toFixed(2)}`;
-        profitEl.textContent = `₹${(
-          parseFloat(profitEl.textContent.replace("₹", "")) + profit
-        ).toFixed(2)}`;
+        revenueEl.textContent = `₹${
+          parseInt(revenueEl.textContent.replace("₹", "")) + sell
+        }`;
+        profitEl.textContent = `₹${
+          parseInt(profitEl.textContent.replace("₹", "")) + profit
+        }`;
 
         // Visual dopamine bump 💥
         [countEl, revenueEl, profitEl].forEach((el) => {

@@ -68,7 +68,7 @@ function initializeTranslationSheet() {
     ["sales.totalProfit", "ne", "नाफा", "Sales Card", new Date()],
 
     ["sales.itemsSold", "en", "Items Sold", "Sales Card", new Date()],
-    ["sales.itemsSold", "ne", "बिक्री भएका सामान", "Sales Card", new Date()],
+    ["sales.itemsSold", "ne", "सामान बिक्री", "Sales Card", new Date()],
 
     [
       "sales.motivation.start",
