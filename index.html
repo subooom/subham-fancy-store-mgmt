@@ -52,7 +52,7 @@
         background-color: oklch(51.1% 0.262 276.966); /* indigo-600 */
       }
       .message.success {
-        color: oklch(62.7% 0.194 149.214); /* green-600 */
+        color: oklch(62.7% 0.194 149.214); /* emerald-600 */
       }
       .message.error {
         color: #e30004; /* red-600 */
@@ -76,14 +76,14 @@
     </style>
   </head>
   <body
-    class="relative min-h-screen bg-gradient-to-br text-xl from-indigo-400 to-purple-600 p-5 font-sans"
+    class="relative min-h-screen bg-gradient-to-br text-xl from-indigo-400 to-purple-600 lg:p-5 font-sans"
   >
     <div
       id="spinnerDiv"
       class="fixed inset-0 bg-black/30 z-20 max-h-screen mx-auto rounded-2xl hidden"
     >
       <svg
-        class="mr-3 -ml-1 size-5 md:size-10 lg:size-14 animate-spin text-indigo-100"
+        class="mr-3 -ml-1 size-8 md:size-10 lg:size-14 animate-spin text-indigo-200"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -104,10 +104,10 @@
       </svg>
     </div>
     <div
-      class="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden"
+      class="max-w-4xl mx-auto bg-white lg:rounded-2xl shadow-2xl overflow-hidden"
     >
       <div
-        class="bg-gray-900 text-white px-8 py-5 flex items-center justify-between shadow-lg"
+        class="bg-gray-900 text-white px-4 py-3 lg:px-8 lg:py-5 flex items-center justify-between shadow-lg"
       >
         <!-- Left Section -->
         <div>
@@ -117,22 +117,22 @@
           >
             Subham Fancy Store
           </h1>
-          <p class="text-sm text-gray-400" data-i18n="page.description">
+          <p class="text-md text-gray-400" data-i18n="page.description">
             Business Management System
           </p>
         </div>
 
         <!-- Right Section -->
         <div
-          class="flex items-center flex-wrap justify-center md:justify-start md:flex-nowrap gap-4"
+          class="flex items-center flex-wrap justify-end md:justify-start md:flex-nowrap gap-4"
         >
           <!-- Vault / Galla Display -->
           <div
             id="vault-amount"
-            class="bg-gray-800 px-5 py-2 rounded-xl text-sm font-medium border border-gray-700"
+            class="bg-red-200 text-black px-5 py-2 rounded-xl text-xl font-medium border border-gray-700 flex gap-1 items-center"
           >
-            <span data-i18n="vault">Galla</span>:
-            <span data-i18n="currency">₹</span><span id="vaultAmount">0</span>
+            <span data-i18n="currency" class="text-inherit">₹</span
+            ><span id="vaultAmount">0</span>
           </div>
 
           <!-- Locale Selector -->
@@ -146,7 +146,7 @@
         </div>
       </div>
 
-      <div class="flex bg-gray-700">
+      <div class="flex bg-gray-700 w-full overflow-x-auto">
         <button
           class="nav-tab flex-1 p-3 text-white hover:not-active:bg-gray-600"
           data-i18n="navbar.sales"
@@ -188,15 +188,15 @@
       <div class="p-6">
         <!-- Sales -->
         <div id="sale-form" class="form-section active">
-          <h2 class="text-xl font-bold mb-4" data-i18n="tabs.sales.title">
+          <h2 class="text-2xl font-bold mb-4" data-i18n="tabs.sales.title">
             Sales Management
           </h2>
           <div
             id="dailySnapshot"
-            class="bg-gradient-to-r mb-4 from-indigo-200 via-purple-200 to-pink-200 text-black rounded-2xl shadow-2xl p-6 mt-6 transition-all duration-500 hover:scale-[1.02]"
+            class="bg-gradient-to-r mb-4 from-indigo-300/70 via-purple-200 to-pink-300/70 text-black rounded-2xl shadow-2xl p-6 mt-6 transition-all duration-500 hover:scale-[1.02]"
           >
             <div class="flex items-center justify-between mb-3">
-              <h2 class="text-lg font-semibold" data-i18n="sales.todaySnapshot">
+              <h2 class="text-xl font-semibold" data-i18n="sales.todaySnapshot">
                 Today's Snapshot
               </h2>
               <span id="snapshotDate" class="text-sm opacity-80"></span>
@@ -205,19 +205,19 @@
             <div class="grid grid-cols-3 gap-4 text-center">
               <div>
                 <p class="text-2xl font-bold" id="salesAmount">₹0</p>
-                <p class="text-sm opacity-90" data-i18n="sales.totalSales">
+                <p class="text-lg opacity-90" data-i18n="sales.totalSales">
                   Sales
                 </p>
               </div>
               <div>
                 <p class="text-2xl font-bold" id="profitAmount">₹0</p>
-                <p class="text-sm opacity-90" data-i18n="sales.totalProfit">
+                <p class="text-lg opacity-90" data-i18n="sales.totalProfit">
                   Profit
                 </p>
               </div>
               <div>
                 <p class="text-2xl font-bold" id="itemsSold">0</p>
-                <p class="text-sm opacity-90" data-i18n="sales.itemsSold">
+                <p class="text-lg opacity-90" data-i18n="sales.itemsSold">
                   Items Sold
                 </p>
               </div>
@@ -317,7 +317,7 @@
                     </label>
                     <span
                       id="instantProfitBadge"
-                      class="hidden text-sm font-semibold px-2 py-0 flex items-center justify-center rounded-full bg-green-200 text-green-800 transition-all duration-200"
+                      class="hidden text-sm font-semibold px-2 py-0 flex items-center justify-center rounded-full bg-emerald-200 text-emerald-800 transition-all duration-200"
                     >
                       +₹0
                     </span>
@@ -346,12 +346,6 @@
                     value="handcash"
                     class="w-full border-2 border-gray-200 rounded-lg p-2 focus:border-indigo-500 focus:outline-none"
                   >
-                    <option
-                      value=""
-                      data-i18n="tabs.sales.form.select_payment_method"
-                    >
-                      Select Payment Method
-                    </option>
                     <!-- Payment methods will be populated by JavaScript -->
                   </select>
                 </div>
@@ -365,7 +359,7 @@
                       class="rounded border-gray-300 text-red-600 focus:ring-red-500"
                     />
                     <span
-                      class="ml-2 text-sm text-gray-600"
+                      class="ml-2 text-md text-gray-600"
                       data-i18n="tabs.sales.form.split_payment"
                       >Split Payment</span
                     >
@@ -445,12 +439,12 @@
               <!-- Calculation Summary -->
               <div class="p-3 bg-indigo-50 rounded-lg border border-indigo-200">
                 <h4
-                  class="font-semibold text-indigo-800 mb-2"
+                  class="font-semibold text-2xl text-indigo-800 mb-2"
                   data-i18n="tabs.sales.form.calculation_summary"
                 >
                   Calculation Summary
                 </h4>
-                <div class="grid grid-cols-2 gap-2 text-sm">
+                <div class="grid grid-cols-2 gap-2 text-md">
                   <div>
                     <span data-i18n="tabs.sales.form.total_cost"
                       >Total Cost:</span
@@ -473,7 +467,7 @@
                     >
                     <span
                       id="total-profit-display"
-                      class="font-medium text-green-600"
+                      class="font-medium text-emerald-700"
                       >₹0.00</span
                     >
                   </div>
@@ -595,7 +589,7 @@
                 </div>
               </div>
               <div
-                class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500"
+                class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500"
               >
                 <div
                   id="daily-total-revenue"
@@ -1153,7 +1147,7 @@
                 </div>
               </div>
               <div
-                class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500"
+                class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500"
               >
                 <div
                   id="daily-loans-taken"
@@ -1411,7 +1405,7 @@
                 </div>
               </div>
               <div
-                class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500"
+                class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500"
               >
                 <div
                   id="daily-paid-dues"
@@ -1511,7 +1505,9 @@
                 Total Profit
               </div>
             </div>
-            <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-green-600">
+            <div
+              class="bg-gray-100 p-4 rounded-lg border-l-4 border-emerald-600"
+            >
               <div id="savings" class="text-2xl font-bold text-gray-800">
                 ₹0
               </div>
@@ -1588,8 +1584,8 @@
         )}`;
 
         profitBadge.classList.remove("hidden");
-        profitBadge.style.backgroundColor = profit >= 0 ? "#bbf7d0" : "#fecaca"; // green-200 / red-200
-        profitBadge.style.color = profit >= 0 ? "#166534" : "#991b1b"; // green-800 / red-800
+        profitBadge.style.backgroundColor = profit >= 0 ? "#bbf7d0" : "#fecaca"; // emerald-200 / red-200
+        profitBadge.style.color = profit >= 0 ? "#166534" : "#991b1b"; // emerald-800 / red-800
 
         setTimeout(() => {
           profitBadge.classList.add("opacity-100");
@@ -1619,9 +1615,9 @@
 
         // Visual dopamine bump 💥
         [countEl, revenueEl, profitEl].forEach((el) => {
-          el.classList.add("scale-110", "text-green-700");
+          el.classList.add("scale-110", "text-emerald-700");
           setTimeout(
-            () => el.classList.remove("scale-110", "text-green-700"),
+            () => el.classList.remove("scale-110", "text-emerald-700"),
             300
           );
         });
@@ -2453,6 +2449,10 @@
             const form = document.getElementById(`${type}Form`);
             form.reset();
 
+            // Set date input to today's date
+            const today = new Date().toISOString().split("T")[0];
+            form.querySelector("#saleDate").value = today;
+
             // If we're in the sales view, refresh the data
             if (
               type === "sale" &&
@@ -2762,8 +2762,7 @@
       // Populate payment method dropdown
       function populatePaymentMethods() {
         const paymentMethodSelect = document.getElementById("paymentMethod");
-        paymentMethodSelect.innerHTML =
-          '<option value="" data-i18n="tabs.sales.form.select_payment_method">Select Payment Method</option>';
+        paymentMethodSelect.innerHTML = "";
 
         paymentMethodsList.forEach((method) => {
           const option = document.createElement("option");
