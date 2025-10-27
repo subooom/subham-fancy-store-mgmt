@@ -34,11 +34,13 @@ function addSale(ss, data) {
   // Use provided date or current date
   const saleDate = data.date ? new Date(data.date) : timestamp;
 
-  let payment_method = "split";
-  let payment_breakdown = data.payment_method;
+  let payment_breakdown;
+  let payment_method = data.paymentMethod;
 
-  if (typeof data.payment_method === "string") {
-    payment_method = data.payment_method;
+  if (typeof data.paymentMethod !== "string") {
+    payment_method = "split";
+    payment_breakdown = data.paymentMethod;
+  } else {
     payment_breakdown = {
       [payment_method]: data.sellingPrice * data.quantity,
     };
@@ -57,6 +59,7 @@ function addSale(ss, data) {
     profit * data.quantity,
     payment_method,
     JSON.stringify(payment_breakdown),
+    data.notes,
   ]);
 
   return successResponse("Sale added successfully!");
@@ -159,15 +162,14 @@ function getDashboardData() {
     JSON.stringify(dashboardData)
   ).setMimeType(ContentService.MimeType.JSON);
 }
-
 function getSalesData(dateString, period) {
   try {
     const ss = SpreadsheetApp.openById(SHEET_ID);
     const salesSheet = ss.getSheetByName("Sales");
 
-    // Get all sales data (skip header row)
+    // Get all sales data (skip header row) - now getting all 13 columns
     const salesData = salesSheet
-      .getRange(2, 1, salesSheet.getLastRow() - 1, 6)
+      .getRange(2, 1, salesSheet.getLastRow() - 1, 13)
       .getValues();
 
     // Parse the target date
@@ -175,12 +177,11 @@ function getSalesData(dateString, period) {
 
     // Filter sales based on period
     let filteredSales = [];
-
     switch (period) {
       case "daily":
         const targetDateString = targetDate.toDateString();
         filteredSales = salesData.filter((row) => {
-          const saleDate = new Date(row[1]);
+          const saleDate = new Date(row[1]); // Column 2: Sale Date
           return saleDate.toDateString() === targetDateString;
         });
         break;
@@ -190,16 +191,17 @@ function getSalesData(dateString, period) {
         weekStart.setDate(targetDate.getDate() - targetDate.getDay());
         const weekEnd = new Date(weekStart);
         weekEnd.setDate(weekStart.getDate() + 6);
+        weekEnd.setHours(23, 59, 59, 999); // Include entire end day
 
         filteredSales = salesData.filter((row) => {
-          const saleDate = new Date(row[1]);
+          const saleDate = new Date(row[1]); // Column 2: Sale Date
           return saleDate >= weekStart && saleDate <= weekEnd;
         });
         break;
 
       case "monthly":
         filteredSales = salesData.filter((row) => {
-          const saleDate = new Date(row[1]);
+          const saleDate = new Date(row[1]); // Column 2: Sale Date
           return (
             saleDate.getFullYear() === targetDate.getFullYear() &&
             saleDate.getMonth() === targetDate.getMonth()
@@ -209,28 +211,42 @@ function getSalesData(dateString, period) {
 
       case "annually":
         filteredSales = salesData.filter((row) => {
-          const saleDate = new Date(row[1]);
+          const saleDate = new Date(row[1]); // Column 2: Sale Date
           return saleDate.getFullYear() === targetDate.getFullYear();
         });
         break;
     }
 
-    // Calculate totals
+    // Calculate totals - using correct column indices and considering quantity
     const totalSales = filteredSales.length;
+
+    // Total Revenue = Sum of (Selling Price * Quantity)
     const totalRevenue = filteredSales.reduce(
-      (sum, row) => sum + (row[4] || 0),
+      (sum, row) => sum + (row[4] || 0) * (row[5] || 0), // Column 5: Selling Price * Column 6: Quantity
       0
     );
+
+    // Total Profit = Sum of (Total Profit column)
     const totalProfit = filteredSales.reduce(
-      (sum, row) => sum + (row[5] || 0),
+      (sum, row) => sum + (row[9] || 0), // Column 10: Total Profit
       0
     );
 
     // Format sales data for response
     const formattedSales = filteredSales.map((row) => ({
-      productName: row[2] || "",
-      costPrice: row[3] || 0,
-      sellingPrice: row[4] || 0,
+      timestamp: row[0] || "", // Column 1: Timestamp
+      saleDate: row[1] ? new Date(row[1]).toISOString() : "", // Column 2: Sale Date
+      productName: row[2] || "", // Column 3: Product Name
+      costPrice: row[3] || 0, // Column 4: Cost Price
+      sellingPrice: row[4] || 0, // Column 5: Selling Price
+      quantity: row[5] || 0, // Column 6: Quantity
+      totalCost: row[6] || 0, // Column 7: Total Cost
+      totalSellingPrice: row[7] || 0, // Column 8: Total Selling Price
+      unitProfit: row[8] || 0, // Column 9: Unit Profit
+      totalProfit: row[9] || 0, // Column 10: Total Profit
+      paymentMethod: row[10] || "", // Column 11: Payment Methods
+      paymentBreakdown: row[11] || "", // Column 12: Payment Breakdown
+      notes: row[12] || "", // Column 13: Notes
     }));
 
     const responseData = {
