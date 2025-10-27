@@ -1,4 +1,4 @@
-const SHEET_ID = "YOUR_SHEET_ID_HERE"; // You'll get this after creating the sheet
+const SHEET_ID = "17YZz_7_3vuq4vvruglFZMhJSipjmZtDf_IcVsL1cnZU";
 
 function doPost(e) {
   try {
@@ -34,13 +34,29 @@ function addSale(ss, data) {
   // Use provided date or current date
   const saleDate = data.date ? new Date(data.date) : timestamp;
 
+  let payment_method = "split";
+  let payment_breakdown = data.payment_method;
+
+  if (typeof data.payment_method === "string") {
+    payment_method = data.payment_method;
+    payment_breakdown = {
+      [payment_method]: data.sellingPrice * data.quantity,
+    };
+  }
+
   sheet.appendRow([
     timestamp,
     saleDate,
     data.productName,
     data.costPrice,
     data.sellingPrice,
+    data.quantity,
+    data.costPrice * data.quantity,
+    data.sellingPrice * data.quantity,
     profit,
+    profit * data.quantity,
+    payment_method,
+    JSON.stringify(payment_breakdown),
   ]);
 
   return successResponse("Sale added successfully!");
