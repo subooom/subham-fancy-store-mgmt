@@ -1564,6 +1564,10 @@
       let currentLoansPeriod = "daily";
       let currentDuesPeriod = "daily";
 
+      const coinDropAudio = new Audio(
+        "https://raw.githubusercontent.com/subooom/subham-fancy-store-mgmt/refs/heads/main/coin-drop.mp3"
+      );
+
       const sellingPriceInput = document.getElementById("sellingPrice");
       const costPriceInput = document.getElementById("costPrice");
       const profitBadge = document.getElementById("instantProfitBadge");
@@ -2328,6 +2332,7 @@
             .then(() => {
               window.scrollTo(0, 0);
               setTimeout(() => {
+                coinDropAudio.play();
                 incrementSalesSummary(formData);
               }, [1600]);
             })
